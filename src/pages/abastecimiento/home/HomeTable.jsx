@@ -14,39 +14,15 @@ import {
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { getColumns } from "../../../functions/tableUtilities";
 import ModalHome from "./ModalHome";
+import { uidsToRemoveHome } from "../../../components/utils";
 
 const HomeTable = ({ data, filter, setFilter }) => {
   const [open, setOpen] = useState(false);
   const allColumns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
 
-  const uidsToRemove = [
-    "fecha_proceso",
-    "ceco",
-    "categoria_item",
-    "linea_item",
-    "docentry",
-    "pkey",
-    "item_code",
-    "id",
-    "fecha_cotizando",
-    "fecha_flujo",
-    "fecha_entrega",
-    "fecha_despacho",
-    "grupo_articulos",
-    "grupo_compra",
-    "fecha_creacion_solped",
-    "cantidad",
-    "rut_2",
-    "proveedor_2",
-    "rut_3",
-    "proveedor_3",
-    "responsable",
-    "bodega",
-    "stock",
-    "stock_fisico",
-  ];
-
-  const columns = allColumns.filter((item) => !uidsToRemove.includes(item.uid));
+  const columns = allColumns.filter(
+    (item) => !uidsToRemoveHome.includes(item.uid)
+  );
 
   const {
     page,
@@ -70,6 +46,9 @@ const HomeTable = ({ data, filter, setFilter }) => {
     } else {
       setOpen(!open);
       solpedData.current = value;
+      // solpedData.current = data.data.filter(
+      //   (d) => d.docentry === value.docentry
+      // );
     }
   };
 
@@ -139,7 +118,11 @@ const HomeTable = ({ data, filter, setFilter }) => {
 
   return (
     <>
-      <ModalHome open={open} handleModal={handleModal} data={solpedData} />
+      <ModalHome
+        open={open}
+        handleModal={handleModal}
+        data={solpedData.current}
+      />
       <Table
         isCompact
         aria-label="Example table with custom cells"

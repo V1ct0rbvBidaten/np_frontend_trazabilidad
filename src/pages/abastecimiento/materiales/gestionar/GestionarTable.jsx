@@ -13,23 +13,14 @@ import {
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { getColumns } from "../../../../functions/tableUtilities";
+import { uidsToRemoveMaterialGestionar } from "../../../../components/utils";
 
 const GestionarTable = ({ data, filter, setFilter }) => {
   const allColumns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
 
-  const uidsToRemove = [
-    "fecha_proceso",
-    "ceco",
-    "categoria_item",
-    "linea_item",
-    "docentry",
-    "pkey",
-    "item_code",
-    "grupo_compra",
-    "grupo_articulos",
-  ];
-
-  const columns = allColumns.filter((item) => !uidsToRemove.includes(item.uid));
+  const columns = allColumns.filter(
+    (item) => !uidsToRemoveMaterialGestionar.includes(item.uid)
+  );
 
   const {
     page,

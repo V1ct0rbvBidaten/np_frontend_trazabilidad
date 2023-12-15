@@ -13,36 +13,14 @@ import {
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { getColumns } from "../../../../functions/tableUtilities";
+import { uidsToRemoveMaterialDespachar } from "../../../../components/utils";
 
 const DespacharTable = ({ data, filter, setFilter }) => {
   const allColumns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
 
-  const uidsToRemove = [
-    "fecha_proceso",
-    "ceco",
-    "categoria_item",
-    "linea_item",
-    "docentry",
-    "pkey",
-    "item_code",
-    "id",
-    "fecha_cotizando",
-    "fecha_flujo",
-    "fecha_entrega",
-    "fecha_despacho",
-    "grupo_articulos",
-    "grupo_compra",
-    "fecha_creacion_solped",
-    "cantidad",
-    "rut_2",
-    "proveedor_2",
-    "rut_3",
-    "proveedor_3",
-    "stock",
-    "stock_fisico",
-  ];
-
-  const columns = allColumns.filter((item) => !uidsToRemove.includes(item.uid));
+  const columns = allColumns.filter(
+    (item) => !uidsToRemoveMaterialDespachar.includes(item.uid)
+  );
 
   const {
     page,
