@@ -25,6 +25,8 @@ const GestionarTable = ({ data, filter, setFilter }) => {
     "docentry",
     "pkey",
     "item_code",
+    "grupo_compra",
+    "grupo_articulos",
   ];
 
   const columns = allColumns.filter((item) => !uidsToRemove.includes(item.uid));
@@ -46,6 +48,16 @@ const GestionarTable = ({ data, filter, setFilter }) => {
     const cellValue = value[columnKey];
 
     switch (columnKey) {
+      case "stock":
+        return cellValue === "BODEGA" ? (
+          <Button size="sm" className="bg-emerald-500 w-50 text-white">
+            BODEGA
+          </Button>
+        ) : (
+          <Button size="sm" className="bg-amber-500 w-50 text-white">
+            COMPRAR
+          </Button>
+        );
       case "detalle":
         return (
           <Button
