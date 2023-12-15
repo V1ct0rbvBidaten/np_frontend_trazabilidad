@@ -8,9 +8,11 @@ import {
 } from "@heroicons/react/24/solid";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo.png";
+import { useDispatch } from "react-redux";
 
 const AbastecimientoSideNav = ({ user }) => {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const ruta = useLocation().pathname;
 
@@ -106,8 +108,12 @@ const AbastecimientoSideNav = ({ user }) => {
     },
   };
 
-  const handleSignOut = async () => {
-    //
+  const handleSignOut = () => {
+    dispatch({
+      type: "LOGOUT",
+      payload: null,
+    });
+    navigate("/");
   };
 
   const handleNavegar = (ruta) => {

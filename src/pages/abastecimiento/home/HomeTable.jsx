@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -15,6 +15,8 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { getColumns } from "../../../functions/tableUtilities";
 
 const HomeTable = ({ data, filter, setFilter }) => {
+
+  const [open,setOpen] = useState(false)
   const allColumns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
 
   const uidsToRemove = [
@@ -59,6 +61,10 @@ const HomeTable = ({ data, filter, setFilter }) => {
     grupo_articulo,
   } = filter;
 
+  const handleModal = (e) => {
+    
+  }
+
   const renderCell = useCallback((value, columnKey) => {
     const cellValue = value[columnKey];
 
@@ -69,6 +75,7 @@ const HomeTable = ({ data, filter, setFilter }) => {
             className="bg-emerald-500 text-white"
             size="sm"
             startContent={<MagnifyingGlassIcon className="h-6" />}
+            onClick={ }
           >
             Detalle
           </Button>
