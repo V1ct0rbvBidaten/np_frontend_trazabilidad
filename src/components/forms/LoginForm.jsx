@@ -55,10 +55,10 @@ const LoginForm = () => {
 
           if (r.data.role === "admin") {
             navigate(`/abastecimiento/home`);
+          } else if (r.data.role === "user") {
+            navigate(`/user/mis-solicitudes`);
           }
-          //    else if (r.data.role === "operator") {
-          //     navigate(`/operador/registro-movimientos`);
-          //   } else if (r.data.role === "user") {
+          // else if (r.data.role === "user") {
           //     navigate(`/user/home`);
           //   }
         });

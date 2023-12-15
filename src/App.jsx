@@ -19,6 +19,8 @@ import ServiciosAprobacion from "./pages/abastecimiento/servicios/aprobacion/Ser
 
 import ServiciosFinalizar from "./pages/abastecimiento/servicios/finalizar/ServiciosFinalizar";
 import UsersList from "./pages/abastecimiento/configuraciones/UsersList";
+import HomeUser from "./pages/solicitantes/home/HomeUser";
+import UserRoute from "./components/routes/UserRoute";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -95,6 +97,11 @@ const App = () => {
             exact
             path="/abastecimiento/configuracion/usuarios"
             element={<AdminRoute Component={UsersList} />}
+          />
+          <Route
+            exact
+            path="/user/mis-solicitudes"
+            element={<UserRoute Component={HomeUser} />}
           />
         </Routes>
       </div>
