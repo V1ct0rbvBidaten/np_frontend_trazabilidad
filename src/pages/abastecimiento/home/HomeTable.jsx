@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useRef } from "react";
 import {
   Table,
   TableHeader,
@@ -13,10 +13,10 @@ import {
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { getColumns } from "../../../functions/tableUtilities";
+import ModalHome from "./ModalHome";
 
 const HomeTable = ({ data, filter, setFilter }) => {
-
-  const [open,setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   const allColumns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
 
   const uidsToRemove = [
@@ -61,9 +61,17 @@ const HomeTable = ({ data, filter, setFilter }) => {
     grupo_articulo,
   } = filter;
 
-  const handleModal = (e) => {
-    
-  }
+  const solpedData = useRef([]);
+
+  const handleModal = (value) => {
+    console.log(value);
+    if (open === true) {
+      setOpen(!open);
+    } else {
+      setOpen(!open);
+      solpedData.current = value;
+    }
+  };
 
   const renderCell = useCallback((value, columnKey) => {
     const cellValue = value[columnKey];
@@ -75,7 +83,7 @@ const HomeTable = ({ data, filter, setFilter }) => {
             className="bg-emerald-500 text-white"
             size="sm"
             startContent={<MagnifyingGlassIcon className="h-6" />}
-            onClick={ }
+            onClick={() => handleModal(value)}
           >
             Detalle
           </Button>
@@ -130,33 +138,36 @@ const HomeTable = ({ data, filter, setFilter }) => {
   }, [filter]);
 
   return (
-    <Table
-      isCompact
-      aria-label="Example table with custom cells"
-      topContent={topContent}
-      bottomContent={bottomContent}
-    >
-      <TableHeader columns={columns}>
-        {(column) => (
-          <TableColumn
-            className="bg-emerald-700 text-white text-xs"
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody loadingContent={<Spinner />} items={data.data}>
-        {(item) => (
-          <TableRow key={item.pkey}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <>
+      <ModalHome open={open} handleModal={handleModal} data={solpedData} />
+      <Table
+        isCompact
+        aria-label="Example table with custom cells"
+        topContent={topContent}
+        bottomContent={bottomContent}
+      >
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn
+              className="bg-emerald-700 text-white text-xs"
+              key={column.uid}
+              align={column.uid === "actions" ? "center" : "start"}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody loadingContent={<Spinner />} items={data.data}>
+          {(item) => (
+            <TableRow key={item.pkey}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </>
   );
 };
 
