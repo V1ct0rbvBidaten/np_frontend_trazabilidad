@@ -15,9 +15,9 @@ import {
 } from "@nextui-org/react";
 import { formatDate } from "../functions/utils";
 import { Stepper, Step } from "react-form-stepper";
-import ButtonActions from "../pages/abastecimiento/materiales/gestionar/ButtonActions";
+import ButtonActions from "./ButtonsActions";
 
-const ModalComponent = ({ data, open, handleModal, buttonActions }) => {
+const ModalComponent = ({ data, open, handleModal }) => {
   const {
     docentry,
     id_solped,
@@ -64,8 +64,8 @@ const ModalComponent = ({ data, open, handleModal, buttonActions }) => {
 
   let flujo = [
     { title: "Por Gestionar" },
-    { title: "Gestionada" },
-    { title: "En Aprobación" },
+    { title: "En proceso" },
+    { title: "Aprobada" },
     { title: "Despachada" },
     { title: "Finalizada" },
   ];
@@ -372,8 +372,8 @@ const ModalComponent = ({ data, open, handleModal, buttonActions }) => {
                 <div className="col-span-3 mt-2">
                   <Stepper activeStep={index}>
                     <Step label="Por Gestionar" />
-                    <Step label="Gestionada" />
-                    <Step label="En Proceso" />
+                    <Step label="En proceso" />
+                    <Step label="Aprobada" />
                     <Step label="Despachada" />
                     <Step label="Finalizada" />
                   </Stepper>

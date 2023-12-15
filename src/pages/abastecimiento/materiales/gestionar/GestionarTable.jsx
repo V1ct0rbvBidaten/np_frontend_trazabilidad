@@ -15,7 +15,6 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { getColumns } from "../../../../functions/tableUtilities";
 import { uidsToRemoveMaterialGestionar } from "../../../../components/utils";
 import ModalComponent from "../../../../components/Modal";
-import ButtonActions from "./ButtonActions";
 
 const GestionarTable = ({ data, filter, setFilter }) => {
   const [open, setOpen] = useState(false);
@@ -133,7 +132,6 @@ const GestionarTable = ({ data, filter, setFilter }) => {
         open={open}
         handleModal={handleModal}
         data={solpedData.current}
-        buttonActions={<ButtonActions />}
       />
       <Table
         isCompact

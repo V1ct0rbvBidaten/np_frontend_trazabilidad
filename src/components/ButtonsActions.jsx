@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { createTrazabilidad } from "../../../../api/r2";
+import { createTrazabilidad } from "../api/r2";
 
 const initialState = {
   estado_pedido: null,
@@ -96,7 +96,17 @@ const ButtonActions = ({ data }) => {
       .catch((err) => toast.error(err));
   };
 
-  return stock === "BODEGA" ? (
+  console.log(estado_pedido);
+
+  return estado_pedido === "Gestionada" ? (
+    <>gestionada</>
+  ) : estado_pedido === "En proceso" ? (
+    <>Aprobación</>
+  ) : estado_pedido === "Despachada" ? (
+    <>gestionada</>
+  ) : estado_pedido === "Finalizada" ? (
+    <>gestionada</>
+  ) : stock === "BODEGA" ? (
     <>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
@@ -106,25 +116,25 @@ const ButtonActions = ({ data }) => {
                 Despachar solicitud
               </ModalHeader>
               {/* <ModalBody>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Magna exercitation reprehenderit magna aute tempor cupidatat
-                  consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                  incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                  aliqua enim laboris do dolor eiusmod. Et mollit incididunt
-                  nisi consectetur esse laborum eiusmod pariatur proident Lorem
-                  eiusmod et. Culpa deserunt nostrud ad veniam.
-                </p>
-              </ModalBody> */}
+                        <p>
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                          Nullam pulvinar risus non risus hendrerit venenatis.
+                          Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                        </p>
+                        <p>
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                          Nullam pulvinar risus non risus hendrerit venenatis.
+                          Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                        </p>
+                        <p>
+                          Magna exercitation reprehenderit magna aute tempor cupidatat
+                          consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
+                          incididunt cillum quis. Velit duis sit officia eiusmod Lorem
+                          aliqua enim laboris do dolor eiusmod. Et mollit incididunt
+                          nisi consectetur esse laborum eiusmod pariatur proident Lorem
+                          eiusmod et. Culpa deserunt nostrud ad veniam.
+                        </p>
+                      </ModalBody> */}
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cerrar
@@ -140,7 +150,7 @@ const ButtonActions = ({ data }) => {
       <Button onClick={onOpen}>Despachar</Button>
     </>
   ) : (
-    <Button>Bodega</Button>
+    <Button>Cotizar</Button>
   );
 };
 

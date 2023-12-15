@@ -13,23 +13,14 @@ import {
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { getColumns } from "../../../../functions/tableUtilities";
+import { uidsToRemoveServicioAprobacion } from "../../../../components/utils";
 
 const AprobacionTable = ({ data, filter, setFilter }) => {
   const allColumns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
 
-  const uidsToRemove = [
-    "fecha_proceso",
-    "ceco",
-    "categoria_item",
-    "linea_item",
-    "docentry",
-    "pkey",
-    "item_code",
-    "stock",
-    "stock_fisico",
-  ];
-
-  const columns = allColumns.filter((item) => !uidsToRemove.includes(item.uid));
+  const columns = allColumns.filter(
+    (item) => !uidsToRemoveServicioAprobacion.includes(item.uid)
+  );
 
   const {
     page,

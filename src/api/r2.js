@@ -6,7 +6,7 @@ export const getCurrentUser = async (userToken) => {
 
 export const createTrazabilidad = async (token, body) => {
   return await axios.post(
-    `${import.meta.env.VITE_API_URL}/users/update_trazabilidad`,
+    `${import.meta.env.VITE_API_URL}/users/save_trazabilidad`,
     body,
     {
       headers: {

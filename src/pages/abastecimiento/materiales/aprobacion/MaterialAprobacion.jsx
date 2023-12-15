@@ -14,7 +14,7 @@ const initialState = {
   solicitante: null,
   grupo_compra: null,
   grupo_articulo: null,
-  estado_pedido: "Proceso",
+  estado_pedido: "En proceso",
 };
 
 const MaterialAprobacion = ({ user }) => {

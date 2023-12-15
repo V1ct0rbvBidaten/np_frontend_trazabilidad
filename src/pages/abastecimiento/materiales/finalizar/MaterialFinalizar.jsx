@@ -14,6 +14,7 @@ const initialState = {
   solicitante: null,
   grupo_compra: null,
   grupo_articulo: null,
+  estado_pedido: "Despachada",
 };
 
 const MaterialFinalizar = ({ user }) => {
