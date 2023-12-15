@@ -75,7 +75,7 @@ const AbastecimientoSideNav = ({ user }) => {
   const activeMenuItemHerramientas = [
     {
       name: "Configuraciones",
-      route: "/flota/configuraciones",
+      route: "/abastecimiento/configuracion/usuarios",
       icon: <AdjustmentsHorizontalIcon className="h-6 w-6 " />,
       type: "Menu",
     },
@@ -221,7 +221,7 @@ const AbastecimientoSideNav = ({ user }) => {
                     icon={c.icon}
                     active
                     key={c.name}
-                    // onClick={() => router.push(c.route)}
+                    onClick={() => handleNavegar(c.route)}
                   >
                     {c.name}
                   </MenuItem>
@@ -231,7 +231,7 @@ const AbastecimientoSideNav = ({ user }) => {
                   <MenuItem
                     icon={c.icon}
                     key={c.name}
-                    // onClick={() => router.push(c.route)}
+                    onClick={() => handleNavegar(c.route)}
                   >
                     {c.name}
                   </MenuItem>
@@ -243,7 +243,7 @@ const AbastecimientoSideNav = ({ user }) => {
                   {c.subMenuItems.map((d) => (
                     <MenuItem
                       key={d.name}
-                      // onClick={() => router.push(d.route)}
+                      onClick={() => handleNavegar(c.route)}
                     >
                       {d.name}
                     </MenuItem>

@@ -18,6 +18,7 @@ import MaterialFinalizar from "./pages/abastecimiento/materiales/finalizar/Mater
 import ServiciosAprobacion from "./pages/abastecimiento/servicios/aprobacion/ServiciosAprobacion";
 
 import ServiciosFinalizar from "./pages/abastecimiento/servicios/finalizar/ServiciosFinalizar";
+import UsersList from "./pages/abastecimiento/configuraciones/UsersList";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -89,6 +90,11 @@ const App = () => {
             exact
             path="/abastecimiento/servicios/finalizar"
             element={<AdminRoute Component={ServiciosFinalizar} />}
+          />
+          <Route
+            exact
+            path="/abastecimiento/configuracion/usuarios"
+            element={<AdminRoute Component={UsersList} />}
           />
         </Routes>
       </div>

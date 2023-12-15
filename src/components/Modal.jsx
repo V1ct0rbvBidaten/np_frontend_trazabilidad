@@ -396,7 +396,7 @@ const ModalComponent = ({ data, open, handleModal, buttonActions }) => {
               <Button color="danger" variant="light" onPress={onClose}>
                 Cerrar
               </Button>
-              <ButtonActions />
+              <ButtonActions data={data} />
             </ModalFooter>
           </>
         )}

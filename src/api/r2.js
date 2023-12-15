@@ -4,6 +4,18 @@ export const getCurrentUser = async (userToken) => {
   return await axios.post(`${import.meta.env.VITE_API_URL}/auth`, userToken);
 };
 
+export const createTrazabilidad = async (token, body) => {
+  return await axios.post(
+    `${import.meta.env.VITE_API_URL}/users/update_trazabilidad`,
+    body,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
 export const getSolicitudesNoGestionadas = async (token, body) => {
   const {
     page,
