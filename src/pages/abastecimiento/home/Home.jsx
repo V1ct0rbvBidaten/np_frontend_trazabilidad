@@ -13,7 +13,7 @@ import useR2Trazabilidad from "../../../hooks/useR2andTrazabilidadData";
 
 const initialStateMaterial = {
   page: 1,
-  per_page: 5,
+  per_page: 10,
   fecha_creacion_solped_start: null,
   fecha_creacion_solped_end: null,
   ceco: null,

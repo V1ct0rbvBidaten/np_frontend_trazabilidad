@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -14,8 +14,11 @@ import {
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { getColumns } from "../../../../functions/tableUtilities";
 import { uidsToRemoveMaterialGestionar } from "../../../../components/utils";
+import ModalComponent from "../../../../components/Modal";
+import ButtonActions from "./ButtonActions";
 
 const GestionarTable = ({ data, filter, setFilter }) => {
+  const [open, setOpen] = useState(false);
   const allColumns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
 
   const columns = allColumns.filter(
@@ -34,6 +37,21 @@ const GestionarTable = ({ data, filter, setFilter }) => {
     grupo_compra,
     grupo_articulo,
   } = filter;
+
+  const solpedData = useRef([]);
+
+  const handleModal = (value) => {
+    console.log(value);
+    if (open === true) {
+      setOpen(!open);
+    } else {
+      setOpen(!open);
+      solpedData.current = value;
+      // solpedData.current = data.data.filter(
+      //   (d) => d.docentry === value.docentry
+      // );
+    }
+  };
 
   const renderCell = useCallback((value, columnKey) => {
     const cellValue = value[columnKey];
@@ -55,6 +73,7 @@ const GestionarTable = ({ data, filter, setFilter }) => {
             className="bg-emerald-500 text-white"
             size="sm"
             startContent={<MagnifyingGlassIcon className="h-6" />}
+            onClick={() => handleModal(value)}
           >
             Detalle
           </Button>
@@ -109,33 +128,41 @@ const GestionarTable = ({ data, filter, setFilter }) => {
   }, [filter]);
 
   return (
-    <Table
-      isCompact
-      aria-label="Example table with custom cells"
-      topContent={topContent}
-      bottomContent={bottomContent}
-    >
-      <TableHeader columns={columns}>
-        {(column) => (
-          <TableColumn
-            className="bg-emerald-700 text-white text-xs"
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody loadingContent={<Spinner />} items={data.data}>
-        {(item) => (
-          <TableRow key={item.pkey}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <>
+      <ModalComponent
+        open={open}
+        handleModal={handleModal}
+        data={solpedData.current}
+        buttonActions={<ButtonActions />}
+      />
+      <Table
+        isCompact
+        aria-label="Example table with custom cells"
+        topContent={topContent}
+        bottomContent={bottomContent}
+      >
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn
+              className="bg-emerald-700 text-white text-xs"
+              key={column.uid}
+              align={column.uid === "actions" ? "center" : "start"}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody loadingContent={<Spinner />} items={data.data}>
+          {(item) => (
+            <TableRow key={item.pkey}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </>
   );
 };
 

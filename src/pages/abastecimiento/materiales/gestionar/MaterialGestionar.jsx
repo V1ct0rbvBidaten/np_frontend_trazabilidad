@@ -2,6 +2,7 @@ import { useState } from "react";
 import MaterialesTitle from "../MaterialesTitle";
 import GestionarTable from "./GestionarTable";
 import useR2Data from "../../../../hooks/useR2Data";
+import useR2pp from "../../../../hooks/useR2pp";
 
 const initialState = {
   page: 1,

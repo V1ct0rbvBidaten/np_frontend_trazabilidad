@@ -13,10 +13,11 @@ import {
   CardBody,
   Textarea,
 } from "@nextui-org/react";
-import { formatDate } from "../../../functions/utils";
+import { formatDate } from "../functions/utils";
 import { Stepper, Step } from "react-form-stepper";
+import ButtonActions from "../pages/abastecimiento/materiales/gestionar/ButtonActions";
 
-const ModalHome = ({ data, open, handleModal }) => {
+const ModalComponent = ({ data, open, handleModal, buttonActions }) => {
   const {
     docentry,
     id_solped,
@@ -80,7 +81,12 @@ const ModalHome = ({ data, open, handleModal }) => {
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Solicitud de pedido
+              <p>
+                Solicitud de pedido
+                <Button className="ml-4 bg-purple-500 text-white" size="sm">
+                  {stock}
+                </Button>
+              </p>
             </ModalHeader>
             <ModalBody>
               {/* {JSON.stringify(data)} */}
@@ -390,9 +396,7 @@ const ModalHome = ({ data, open, handleModal }) => {
               <Button color="danger" variant="light" onPress={onClose}>
                 Cerrar
               </Button>
-              {/* <Button color="primary" onPress={onClose}>
-                Action
-              </Button> */}
+              <ButtonActions />
             </ModalFooter>
           </>
         )}
@@ -401,4 +405,4 @@ const ModalHome = ({ data, open, handleModal }) => {
   );
 };
 
-export default ModalHome;
+export default ModalComponent;
