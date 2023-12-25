@@ -55,7 +55,7 @@ const ModalComponent = ({ data, open, handleModal, resetState }) => {
     estado,
     id,
     estado_pedido,
-    responsable_depacho,
+    responsable_despacho,
     comentario_despacho,
     comentario_rechazo,
     receptor_despacho,
@@ -319,7 +319,7 @@ const ModalComponent = ({ data, open, handleModal, resetState }) => {
                             size="sm"
                             isReadOnly
                             className="w-full"
-                            value={responsable_depacho}
+                            value={responsable_despacho}
                             variant="bordered"
                           />
 

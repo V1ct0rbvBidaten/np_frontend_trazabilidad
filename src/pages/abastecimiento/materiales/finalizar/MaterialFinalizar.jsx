@@ -1,7 +1,8 @@
 import { useState } from "react";
 import MaterialesTitle from "../MaterialesTitle";
-import FinalizarTable from "./FinalizarTable";
 import useR2Trazabilidad from "../../../../hooks/useR2andTrazabilidadData";
+import DataTableMateriales from "../../../../components/DataTableMateriales";
+import { ESTADO_DESPACHAR } from "../../../../components/estados_proceso";
 
 const initialState = {
   page: 1,
@@ -14,7 +15,7 @@ const initialState = {
   solicitante: null,
   grupo_compra: null,
   grupo_articulo: null,
-  estado_pedido: "Despachada",
+  estado_pedido: ESTADO_DESPACHAR,
 };
 
 const MaterialFinalizar = ({ user }) => {
@@ -45,7 +46,7 @@ const MaterialFinalizar = ({ user }) => {
       <MaterialesTitle etapa={"Confirmar entrega de solicitudes"} />
 
       <div className="flex mt-2 w-full flex-col">
-        <FinalizarTable
+        <DataTableMateriales
           data={registros}
           filter={body}
           resetState={resetState}

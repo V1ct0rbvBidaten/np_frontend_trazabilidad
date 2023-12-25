@@ -1,8 +1,7 @@
 import { useState } from "react";
 import MaterialesTitle from "../MaterialesTitle";
-import AprobacionTable from "./AprobacionTable";
 import useR2Trazabilidad from "../../../../hooks/useR2andTrazabilidadData";
-import { ESTAdO_EN_PROCESO } from "../../../../components/estados_proceso";
+import { ESTADO_EN_PROCESO } from "../../../../components/estados_proceso";
 import DataTableMateriales from "../../../../components/DataTableMateriales";
 
 const initialState = {
@@ -16,7 +15,7 @@ const initialState = {
   solicitante: null,
   grupo_compra: null,
   grupo_articulo: null,
-  estado_pedido: ESTAdO_EN_PROCESO,
+  estado_pedido: ESTADO_EN_PROCESO,
 };
 
 const MaterialAprobacion = ({ user }) => {
