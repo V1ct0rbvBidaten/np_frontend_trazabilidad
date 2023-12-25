@@ -1,8 +1,8 @@
 import { useState } from "react";
 import MaterialesTitle from "../MaterialesTitle";
 import useR2Trazabilidad from "../../../../hooks/useR2andTrazabilidadData";
-import CotizandoTable from "./CotizandoTable";
 import { ESTADO_COTIZANDO } from "../../../../components/estados_proceso";
+import DataTableMateriales from "../../../../components/DataTableMateriales";
 
 const initialState = {
   page: 1,
@@ -48,7 +48,7 @@ const MaterialCotizando = ({ user }) => {
       <MaterialesTitle etapa={"Solicitudes en cotización"} />
 
       <div className="flex mt-2 w-full flex-col">
-        <CotizandoTable
+        <DataTableMateriales
           data={registros}
           filter={body}
           setFilter={setBody}

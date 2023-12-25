@@ -9,21 +9,45 @@ import {
   Button,
   Pagination,
   Spinner,
+  DropdownTrigger,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
 } from "@nextui-org/react";
 
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import { getColumns } from "../../../../functions/tableUtilities";
-import { uidsToRemoveMaterialAprobacion } from "../../../../components/utils";
-import ModalComponent from "../../../../components/Modal";
+import {
+  MagnifyingGlassIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/24/solid";
+import { getColumns } from "../functions/tableUtilities";
 
-const AprobacionTable = ({ data, filter, setFilter, resetState }) => {
+import ModalComponent from "./Modal";
+import { capitalize } from "../functions/utils";
+
+const INITIAL_VISIBLE_COLUMNS = [
+  "id_solped",
+  "fecha_creacion_solped",
+  "solicitante",
+  "item",
+  "detalle",
+];
+
+const DataTableMateriales = ({ data, filter, setFilter, resetState }) => {
   const [open, setOpen] = useState(false);
 
-  const allColumns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
-
-  const columns = allColumns.filter(
-    (item) => !uidsToRemoveMaterialAprobacion.includes(item.uid)
+  const [visibleColumns, setVisibleColumns] = useState(
+    new Set(INITIAL_VISIBLE_COLUMNS)
   );
+
+  const columns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
+
+  const headerColumns = useMemo(() => {
+    if (visibleColumns === "all") return columns;
+
+    return columns.filter((column) =>
+      Array.from(visibleColumns).includes(column.uid)
+    );
+  }, [visibleColumns]);
 
   const {
     page,
@@ -75,13 +99,38 @@ const AprobacionTable = ({ data, filter, setFilter, resetState }) => {
 
   const pages = data.total_pages;
 
+  const btnRef = useRef();
+
   const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">
-            Total {data.total_count} Solicitudes en proceso de aprobación
-          </span>
+        <div className="flex justify-end items-center gap-4">
+          <Dropdown>
+            <DropdownTrigger className="hidden sm:flex">
+              <Button
+                endContent={<ChevronDownIcon className="h-6" />}
+                variant="flat"
+                size="sm"
+                className="bg-foreground text-white"
+              >
+                Filtrar Columnas
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              disallowEmptySelection
+              aria-label="Table Columns"
+              closeOnSelect={false}
+              selectedKeys={visibleColumns}
+              selectionMode="multiple"
+              onSelectionChange={setVisibleColumns}
+            >
+              {columns.map((column) => (
+                <DropdownItem key={column.uid} className="capitalize">
+                  {capitalize(column.name)}
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
           <label className="flex items-center text-default-400 text-small">
             Filas por pagina:
             <select
@@ -99,11 +148,11 @@ const AprobacionTable = ({ data, filter, setFilter, resetState }) => {
         </div>
       </div>
     );
-  }, [filter]);
+  }, [filter, visibleColumns]);
 
   const bottomContent = useMemo(() => {
     return (
-      <div className="flex w-full justify-center">
+      <div className="flex w-full justify-between">
         <Pagination
           isCompact
           showControls
@@ -113,6 +162,9 @@ const AprobacionTable = ({ data, filter, setFilter, resetState }) => {
           total={pages}
           onChange={(page) => setFilter({ ...filter, page: Number(page) })}
         />
+        <span className="text-default-400 text-small">
+          Total {data.total_count} solicitudes
+        </span>
       </div>
     );
   }, [filter]);
@@ -131,7 +183,7 @@ const AprobacionTable = ({ data, filter, setFilter, resetState }) => {
         topContent={topContent}
         bottomContent={bottomContent}
       >
-        <TableHeader columns={columns}>
+        <TableHeader columns={headerColumns}>
           {(column) => (
             <TableColumn
               className="bg-emerald-700 text-white text-xs"
@@ -156,4 +208,4 @@ const AprobacionTable = ({ data, filter, setFilter, resetState }) => {
   );
 };
 
-export default AprobacionTable;
+export default DataTableMateriales;

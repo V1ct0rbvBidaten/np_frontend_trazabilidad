@@ -2,6 +2,8 @@ import { useState } from "react";
 import MaterialesTitle from "../MaterialesTitle";
 import AprobacionTable from "./AprobacionTable";
 import useR2Trazabilidad from "../../../../hooks/useR2andTrazabilidadData";
+import { ESTAdO_EN_PROCESO } from "../../../../components/estados_proceso";
+import DataTableMateriales from "../../../../components/DataTableMateriales";
 
 const initialState = {
   page: 1,
@@ -14,7 +16,7 @@ const initialState = {
   solicitante: null,
   grupo_compra: null,
   grupo_articulo: null,
-  estado_pedido: "En proceso",
+  estado_pedido: ESTAdO_EN_PROCESO,
 };
 
 const MaterialAprobacion = ({ user }) => {
@@ -46,7 +48,7 @@ const MaterialAprobacion = ({ user }) => {
       <MaterialesTitle etapa={"Solicitudes en proceso de aprobación"} />
 
       <div className="flex mt-2 w-full flex-col">
-        <AprobacionTable
+        <DataTableMateriales
           data={registros}
           filter={body}
           setFilter={setBody}

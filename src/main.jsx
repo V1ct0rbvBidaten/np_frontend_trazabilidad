@@ -6,10 +6,12 @@ import { NextUIProvider } from "@nextui-org/react";
 import { BrowserRouter } from "react-router-dom";
 
 import { configureStore } from "@reduxjs/toolkit";
+import "@radix-ui/themes/styles.css";
 
 import { Provider } from "react-redux";
 // import { composeWithDevTools } from "redux-devtools-extension";
 import { ChakraProvider } from "@chakra-ui/react";
+import { Theme } from "@radix-ui/themes";
 
 import rootReducer from "./reducers";
 
@@ -24,7 +26,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <ChakraProvider>
         <Provider store={store}>
           <BrowserRouter>
-            <App />
+            <Theme>
+              <App />
+            </Theme>
           </BrowserRouter>
         </Provider>
       </ChakraProvider>

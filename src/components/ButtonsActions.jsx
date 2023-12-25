@@ -7,36 +7,36 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Input,
+  Textarea,
 } from "@nextui-org/react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { createTrazabilidad, updateTrazabilidad } from "../api/r2";
 import {
+  ESTADO_COTIZANDO,
   ESTADO_DESPACHAR,
   ESTADO_EN_APROBACION_APROBADA,
   ESTADO_EN_APROBACION_RECHAZADA,
   ESTADO_FINALIZAR,
   ESTADO_GESTIONAR,
+  ESTAdO_EN_PROCESO,
 } from "./estados_proceso";
 
 const initialState = {
   estado_pedido: null,
-  bodega: null,
-  rut: null,
-  proveedor: null,
-  rut_2: null,
-  proveedor_2: null,
-  rut_3: null,
-  proveedor_3: null,
-  nro_ic: null,
-  fecha_oc: null,
-  observacion: null,
-  responsable: null,
-  pkey: null,
+  responsable_depacho: null,
+  comentario_despacho: null,
+  comentario_rechazo: null,
+  receptor_despacho: null,
+  nro_doc_respaldo: null,
+  imagen_respaldo: null,
   fecha_cotizando: null,
-  fecha_flujo: null,
-  fecha_despacho: null,
-  fecha_entrega: null,
+  fecha_despachada: null,
+  fecha_en_proceso: null,
+  fecha_aprobada: null,
+  fecha_rechazada: null,
+  fecha_finalizada: null,
 };
 
 const ButtonActions = ({ data, handleModal, resetState }) => {
@@ -73,20 +73,18 @@ const ButtonActions = ({ data, handleModal, resetState }) => {
     estado,
     id,
     estado_pedido,
-    bodega,
-    rut,
-    rut_2,
-    proveedor_2,
-    rut_3,
-    proveedor_3,
-    nro_oc,
-    fecha_oc,
-    observacion,
-    responsable,
+    responsable_depacho,
+    comentario_despacho,
+    comentario_rechazo,
+    receptor_despacho,
+    nro_doc_respaldo,
+    imagen_respaldo,
     fecha_cotizando,
-    fecha_flujo,
-    fecha_despacho,
-    fecha_entrega,
+    fecha_despachada,
+    fecha_en_proceso,
+    fecha_aprobada,
+    fecha_rechazada,
+    fecha_finalizada,
   } = data;
 
   const handleChange = (e) => {
@@ -107,10 +105,22 @@ const ButtonActions = ({ data, handleModal, resetState }) => {
       });
   };
 
+  function formatTimestamp(date) {
+    let day = date.getDate().toString().padStart(2, "0");
+    let month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
+    let year = date.getFullYear();
+    let hours = date.getHours().toString().padStart(2, "0");
+    let minutes = date.getMinutes().toString().padStart(2, "0");
+    let seconds = date.getSeconds().toString().padStart(2, "0");
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+
   const handleCotizar = () => {
     values.pkey = pkey;
-    values.fecha_cotizando = Date.now();
-    values.estado_pedido = ESTADO_GESTIONAR;
+    values.fecha_cotizando = formatTimestamp(new Date());
+
+    values.estado_pedido = ESTADO_COTIZANDO;
 
     if (!id) {
       createTrazabilidad(user.token, values)
@@ -131,9 +141,23 @@ const ButtonActions = ({ data, handleModal, resetState }) => {
     }
   };
 
+  const handleProceso = () => {
+    values.pkey = pkey;
+    values.fecha_en_proceso = formatTimestamp(new Date());
+    values.estado_pedido = ESTAdO_EN_PROCESO;
+
+    updateTrazabilidad(user.token, Number(id), values)
+      .then((res) => toast.success("Solicitud actualizada exitosamente"))
+      .catch((err) => toast.error(err))
+      .finally(() => {
+        handleModal();
+        resetState();
+      });
+  };
+
   const handleAprobar = () => {
     values.pkey = pkey;
-    values.fecha_despacho = Date.now();
+    values.fecha_aprobada = formatTimestamp(new Date());
     values.estado_pedido = ESTADO_EN_APROBACION_APROBADA;
 
     updateTrazabilidad(user.token, Number(id), values)
@@ -147,7 +171,7 @@ const ButtonActions = ({ data, handleModal, resetState }) => {
 
   const handleRechazar = () => {
     values.pkey = pkey;
-    values.fecha_despacho = Date.now();
+    values.fecha_rechazada = formatTimestamp(new Date());
     values.estado_pedido = ESTADO_EN_APROBACION_RECHAZADA;
 
     updateTrazabilidad(user.token, Number(id), values)
@@ -161,7 +185,7 @@ const ButtonActions = ({ data, handleModal, resetState }) => {
 
   const handleFinalizar = () => {
     values.pkey = pkey;
-    values.fecha_entrega = Date.now();
+    values.fecha_finalizada = formatTimestamp(new Date());
     values.estado_pedido = ESTADO_FINALIZAR;
 
     updateTrazabilidad(user.token, Number(id), values)
@@ -198,6 +222,14 @@ const ButtonActions = ({ data, handleModal, resetState }) => {
     >
       Despachar
     </Button>
+  ) : estado_pedido === ESTADO_COTIZANDO ? (
+    <Button
+      onPress={handleProceso}
+      className="bg-amber-500 text-white"
+      radius="full"
+    >
+      Iniciar Proceso de Aprobación
+    </Button>
   ) : estado_pedido === ESTADO_DESPACHAR ? (
     <Button
       onPress={handleFinalizar}
@@ -215,6 +247,32 @@ const ButtonActions = ({ data, handleModal, resetState }) => {
               <ModalHeader className="flex flex-col gap-1">
                 Despachar solicitud
               </ModalHeader>
+              <ModalBody>
+                <div>
+                  <Input
+                    label="Responsable despacho"
+                    labelPlacement="outside"
+                    placeholder=" "
+                    size="sm"
+                    className="w-full"
+                    value={values.responsable_depacho}
+                    name="responsable_despacho"
+                    onChange={handleChange}
+                    variant="bordered"
+                  />
+                  <Textarea
+                    label="Comentario despacho"
+                    labelPlacement="outside"
+                    placeholder=" "
+                    size="sm"
+                    className="w-full"
+                    value={values.comentario_despacho}
+                    onChange={handleChange}
+                    name="comentario_despacho"
+                    variant="bordered"
+                  />
+                </div>
+              </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cerrar
@@ -233,7 +291,8 @@ const ButtonActions = ({ data, handleModal, resetState }) => {
         </ModalContent>
       </Modal>
       <Button
-        onPress={handleDespachar}
+        // onPress={handleDespachar}
+        onClick={onOpenChange}
         className="bg-amber-500 text-white"
         radius="full"
       >
@@ -242,25 +301,6 @@ const ButtonActions = ({ data, handleModal, resetState }) => {
     </>
   ) : (
     <>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Cotizar solicitud
-              </ModalHeader>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Cerrar
-                </Button>
-                <Button color="primary" onPress={handleDespachar}>
-                  Despachar
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
       <Button
         onPress={handleCotizar}
         className="bg-amber-500 text-white"

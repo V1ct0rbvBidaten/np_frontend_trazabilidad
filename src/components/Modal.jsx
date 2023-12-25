@@ -16,6 +16,14 @@ import {
 import { formatDate } from "../functions/utils";
 import { Stepper, Step } from "react-form-stepper";
 import ButtonActions from "./ButtonsActions";
+import {
+  ESTADO_COTIZANDO,
+  ESTADO_DESPACHAR,
+  ESTADO_EN_APROBACION_APROBADA,
+  ESTADO_FINALIZAR,
+  ESTADO_GESTIONAR,
+  ESTAdO_EN_PROCESO,
+} from "./estados_proceso";
 
 const ModalComponent = ({ data, open, handleModal, resetState }) => {
   const {
@@ -42,31 +50,32 @@ const ModalComponent = ({ data, open, handleModal, resetState }) => {
     fecha_borrador_oc,
     fecha_creacion_oc,
     id_borrador_oc,
+    fecha_oc,
     proveedor,
     estado,
     id,
     estado_pedido,
-    bodega,
-    rut,
-    rut_2,
-    proveedor_2,
-    rut_3,
-    proveedor_3,
-    nro_oc,
-    fecha_oc,
-    observacion,
-    responsable,
+    responsable_depacho,
+    comentario_despacho,
+    comentario_rechazo,
+    receptor_despacho,
+    nro_doc_respaldo,
+    imagen_respaldo,
     fecha_cotizando,
-    fecha_flujo,
-    fecha_despacho,
-    fecha_entrega,
+    fecha_despachada,
+    fecha_en_proceso,
+    fecha_aprobada,
+    fecha_rechazada,
+    fecha_finalizada,
   } = data;
 
   let flujo = [
-    { title: "Por gestionar" },
-    { title: "En proceso" },
-    { title: "Aprobada" },
-    { title: "Finalizada" },
+    { title: ESTADO_GESTIONAR },
+    { title: ESTADO_COTIZANDO },
+    { title: ESTAdO_EN_PROCESO },
+    { title: ESTADO_EN_APROBACION_APROBADA },
+    { title: ESTADO_DESPACHAR },
+    { title: ESTADO_FINALIZAR },
   ];
 
   const index =
@@ -75,7 +84,12 @@ const ModalComponent = ({ data, open, handleModal, resetState }) => {
       : 0;
 
   return (
-    <Modal size="5xl" isOpen={open} onOpenChange={handleModal}>
+    <Modal
+      size="5xl"
+      scrollBehavior="inside"
+      isOpen={open}
+      onOpenChange={handleModal}
+    >
       <ModalContent>
         {(onClose) => (
           <>
@@ -295,29 +309,49 @@ const ModalComponent = ({ data, open, handleModal, resetState }) => {
                         </CardBody>
                       </Card>
                     </Tab>
+                    <Tab key="despacho" title="Despacho">
+                      <Card className="w-full">
+                        <CardBody className="grid  gap-2">
+                          <Input
+                            label="Responsable despacho"
+                            labelPlacement="outside"
+                            placeholder=" "
+                            size="sm"
+                            isReadOnly
+                            className="w-full"
+                            value={responsable_depacho}
+                            variant="bordered"
+                          />
+
+                          <Textarea
+                            label="Fecha Solicitud"
+                            labelPlacement="outside"
+                            placeholder=" "
+                            size="sm"
+                            isReadOnly
+                            className="w-full"
+                            value={comentario_despacho}
+                            variant="bordered"
+                          />
+                        </CardBody>
+                      </Card>
+                    </Tab>
                   </Tabs>
                 </div>
 
-                <p className="col-span-3 mt-2">Estado Gestión</p>
-                <Divider className="col-span-3" />
-                <div className="col-span-3 mt-2">
+                <p className="col-span-4 mt-2">Estado Gestión</p>
+                <Divider className="col-span-4" />
+                <div className="col-span-4 mt-2">
                   <Stepper activeStep={index}>
-                    <Step label="Por gestionar" />
-                    <Step label="En proceso" />
-                    <Step label="Despachada" />
-                    <Step label="Finalizada" />
+                    <Step label={ESTADO_GESTIONAR} />
+                    <Step label={ESTADO_COTIZANDO} />
+                    <Step label={ESTAdO_EN_PROCESO} />
+                    <Step label={ESTADO_EN_APROBACION_APROBADA} />
+
+                    <Step label={ESTADO_DESPACHAR} />
+                    <Step label={ESTADO_FINALIZAR} />
                   </Stepper>
                 </div>
-                <Textarea
-                  label="Observación"
-                  labelPlacement="outside"
-                  placeholder=" "
-                  size="sm"
-                  isReadOnly
-                  className="w-full"
-                  value={observacion}
-                  variant="bordered"
-                />
               </div>
 
               {/* <p>{JSON.stringify(data)}</p> */}
