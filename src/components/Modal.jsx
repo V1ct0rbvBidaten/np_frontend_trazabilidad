@@ -17,7 +17,7 @@ import { formatDate } from "../functions/utils";
 import { Stepper, Step } from "react-form-stepper";
 import ButtonActions from "./ButtonsActions";
 
-const ModalComponent = ({ data, open, handleModal }) => {
+const ModalComponent = ({ data, open, handleModal, resetState }) => {
   const {
     docentry,
     id_solped,
@@ -63,10 +63,9 @@ const ModalComponent = ({ data, open, handleModal }) => {
   } = data;
 
   let flujo = [
-    { title: "Por Gestionar" },
+    { title: "Por gestionar" },
     { title: "En proceso" },
     { title: "Aprobada" },
-    { title: "Despachada" },
     { title: "Finalizada" },
   ];
 
@@ -296,74 +295,6 @@ const ModalComponent = ({ data, open, handleModal }) => {
                         </CardBody>
                       </Card>
                     </Tab>
-                    <Tab key="proveedores" title="Proveedores">
-                      <Card>
-                        <CardBody>
-                          <div className="grid grid-cols-2 gap-2">
-                            <Input
-                              label="Rut"
-                              labelPlacement="outside"
-                              placeholder=" "
-                              size="sm"
-                              isReadOnly
-                              className="w-full"
-                              value={rut}
-                              variant="bordered"
-                            />
-                            <Input
-                              label="Proveedor"
-                              labelPlacement="outside"
-                              placeholder=" "
-                              size="sm"
-                              isReadOnly
-                              className="w-full"
-                              value={proveedor}
-                              variant="bordered"
-                            />
-                            <Input
-                              label="Rut"
-                              labelPlacement="outside"
-                              placeholder=" "
-                              size="sm"
-                              isReadOnly
-                              className="w-full"
-                              value={rut_2}
-                              variant="bordered"
-                            />
-                            <Input
-                              label="Proveedor"
-                              labelPlacement="outside"
-                              placeholder=" "
-                              size="sm"
-                              isReadOnly
-                              className="w-full"
-                              value={proveedor_2}
-                              variant="bordered"
-                            />
-                            <Input
-                              label="Rut"
-                              labelPlacement="outside"
-                              placeholder=" "
-                              size="sm"
-                              isReadOnly
-                              className="w-full"
-                              value={rut_3}
-                              variant="bordered"
-                            />
-                            <Input
-                              label="Proveedor"
-                              labelPlacement="outside"
-                              placeholder=" "
-                              size="sm"
-                              isReadOnly
-                              className="w-full"
-                              value={proveedor_3}
-                              variant="bordered"
-                            />
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </Tab>
                   </Tabs>
                 </div>
 
@@ -371,9 +302,8 @@ const ModalComponent = ({ data, open, handleModal }) => {
                 <Divider className="col-span-3" />
                 <div className="col-span-3 mt-2">
                   <Stepper activeStep={index}>
-                    <Step label="Por Gestionar" />
+                    <Step label="Por gestionar" />
                     <Step label="En proceso" />
-                    <Step label="Aprobada" />
                     <Step label="Despachada" />
                     <Step label="Finalizada" />
                   </Stepper>
@@ -396,7 +326,11 @@ const ModalComponent = ({ data, open, handleModal }) => {
               <Button color="danger" variant="light" onPress={onClose}>
                 Cerrar
               </Button>
-              <ButtonActions data={data} />
+              <ButtonActions
+                data={data}
+                handleModal={handleModal}
+                resetState={resetState}
+              />
             </ModalFooter>
           </>
         )}

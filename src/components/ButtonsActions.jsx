@@ -10,7 +10,14 @@ import {
 } from "@nextui-org/react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { createTrazabilidad } from "../api/r2";
+import { createTrazabilidad, updateTrazabilidad } from "../api/r2";
+import {
+  ESTADO_DESPACHAR,
+  ESTADO_EN_APROBACION_APROBADA,
+  ESTADO_EN_APROBACION_RECHAZADA,
+  ESTADO_FINALIZAR,
+  ESTADO_GESTIONAR,
+} from "./estados_proceso";
 
 const initialState = {
   estado_pedido: null,
@@ -32,7 +39,7 @@ const initialState = {
   fecha_entrega: null,
 };
 
-const ButtonActions = ({ data }) => {
+const ButtonActions = ({ data, handleModal, resetState }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const user = useSelector((state) => state.user);
 
@@ -89,23 +96,116 @@ const ButtonActions = ({ data }) => {
   const handleDespachar = () => {
     values.pkey = pkey;
     values.fecha_despacho = Date.now();
-    values.estado_pedido = "Despachada";
+    values.estado_pedido = ESTADO_DESPACHAR;
 
     createTrazabilidad(user.token, values)
       .then((res) => toast.success("Solicitud actualizada exitosamente"))
-      .catch((err) => toast.error(err));
+      .catch((err) => toast.error(err))
+      .finally(() => {
+        handleModal();
+        resetState();
+      });
   };
 
-  console.log(estado_pedido);
+  const handleCotizar = () => {
+    values.pkey = pkey;
+    values.fecha_cotizando = Date.now();
+    values.estado_pedido = ESTADO_GESTIONAR;
 
-  return estado_pedido === "Gestionada" ? (
-    <>gestionada</>
-  ) : estado_pedido === "En proceso" ? (
-    <>Aprobación</>
-  ) : estado_pedido === "Despachada" ? (
-    <>gestionada</>
-  ) : estado_pedido === "Finalizada" ? (
-    <>gestionada</>
+    if (!id) {
+      createTrazabilidad(user.token, values)
+        .then((res) => toast.success("Solicitud actualizada exitosamente"))
+        .catch((err) => toast.error(err))
+        .finally(() => {
+          handleModal();
+          resetState();
+        });
+    } else {
+      updateTrazabilidad(user.token, Number(id), values)
+        .then((res) => toast.success("Solicitud actualizada exitosamente"))
+        .catch((err) => toast.error(err))
+        .finally(() => {
+          handleModal();
+          resetState();
+        });
+    }
+  };
+
+  const handleAprobar = () => {
+    values.pkey = pkey;
+    values.fecha_despacho = Date.now();
+    values.estado_pedido = ESTADO_EN_APROBACION_APROBADA;
+
+    updateTrazabilidad(user.token, Number(id), values)
+      .then((res) => toast.success("Solicitud actualizada exitosamente"))
+      .catch((err) => toast.error(err))
+      .finally(() => {
+        handleModal();
+        resetState();
+      });
+  };
+
+  const handleRechazar = () => {
+    values.pkey = pkey;
+    values.fecha_despacho = Date.now();
+    values.estado_pedido = ESTADO_EN_APROBACION_RECHAZADA;
+
+    updateTrazabilidad(user.token, Number(id), values)
+      .then((res) => toast.success("Solicitud actualizada exitosamente"))
+      .catch((err) => toast.error(err))
+      .finally(() => {
+        handleModal();
+        resetState();
+      });
+  };
+
+  const handleFinalizar = () => {
+    values.pkey = pkey;
+    values.fecha_entrega = Date.now();
+    values.estado_pedido = ESTADO_FINALIZAR;
+
+    updateTrazabilidad(user.token, Number(id), values)
+      .then((res) => toast.success("Solicitud actualizada exitosamente"))
+      .catch((err) => toast.error(err))
+      .finally(() => {
+        handleModal();
+        resetState();
+      });
+  };
+
+  return estado_pedido === ESTADO_GESTIONAR ? (
+    <>
+      <Button
+        onPress={handleRechazar}
+        className="bg-rose-500 text-white"
+        radius="full"
+      >
+        Rechazar
+      </Button>
+      <Button
+        onPress={handleAprobar}
+        className="bg-emerald-500 text-white"
+        radius="full"
+      >
+        Aprobar
+      </Button>
+    </>
+  ) : estado_pedido === ESTADO_EN_APROBACION_APROBADA ? (
+    <Button
+      onPress={handleDespachar}
+      className="bg-amber-500 text-white"
+      radius="full"
+    >
+      Despachar
+    </Button>
+  ) : estado_pedido === ESTADO_DESPACHAR ? (
+    <Button
+      onPress={handleFinalizar}
+      className="bg-amber-500 text-white"
+      radius="full"
+    >
+      Finalizar
+    </Button>
   ) : stock === "BODEGA" ? (
     <>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -115,26 +215,40 @@ const ButtonActions = ({ data }) => {
               <ModalHeader className="flex flex-col gap-1">
                 Despachar solicitud
               </ModalHeader>
-              {/* <ModalBody>
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                          Nullam pulvinar risus non risus hendrerit venenatis.
-                          Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                        </p>
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                          Nullam pulvinar risus non risus hendrerit venenatis.
-                          Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                        </p>
-                        <p>
-                          Magna exercitation reprehenderit magna aute tempor cupidatat
-                          consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                          incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                          aliqua enim laboris do dolor eiusmod. Et mollit incididunt
-                          nisi consectetur esse laborum eiusmod pariatur proident Lorem
-                          eiusmod et. Culpa deserunt nostrud ad veniam.
-                        </p>
-                      </ModalBody> */}
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Cerrar
+                </Button>
+
+                <Button
+                  onPress={handleDespachar}
+                  className="bg-amber-500 text-white"
+                  radius="full"
+                >
+                  Despachar
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+      <Button
+        onPress={handleDespachar}
+        className="bg-amber-500 text-white"
+        radius="full"
+      >
+        Despachar
+      </Button>
+    </>
+  ) : (
+    <>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Cotizar solicitud
+              </ModalHeader>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cerrar
@@ -147,10 +261,14 @@ const ButtonActions = ({ data }) => {
           )}
         </ModalContent>
       </Modal>
-      <Button onClick={onOpen}>Despachar</Button>
+      <Button
+        onPress={handleCotizar}
+        className="bg-amber-500 text-white"
+        radius="full"
+      >
+        Cotizar
+      </Button>
     </>
-  ) : (
-    <Button>Cotizar</Button>
   );
 };
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getR2Trazabilidad } from "../api/r2";
 
-function useR2Trazabilidad(token, body) {
+function useR2Trazabilidad(token, body, reload) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,7 +14,7 @@ function useR2Trazabilidad(token, body) {
       })
       .catch((err) => setError(err))
       .finally(() => setLoading(false));
-  }, [body]);
+  }, [body, reload]);
 
   return { data, loading, error };
 }

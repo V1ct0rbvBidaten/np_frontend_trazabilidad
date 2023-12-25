@@ -19,8 +19,17 @@ const initialState = {
 
 const MaterialAprobacion = ({ user }) => {
   const [body, setBody] = useState(initialState);
+  const [reload, setReload] = useState(false);
 
-  const { data: registros, loading } = useR2Trazabilidad(user.token, body);
+  const resetState = () => {
+    setReload(!reload);
+  };
+
+  const { data: registros, loading } = useR2Trazabilidad(
+    user.token,
+    body,
+    reload
+  );
 
   if (loading)
     return (
@@ -37,7 +46,12 @@ const MaterialAprobacion = ({ user }) => {
       <MaterialesTitle etapa={"Solicitudes en proceso de aprobación"} />
 
       <div className="flex mt-2 w-full flex-col">
-        <AprobacionTable data={registros} filter={body} setFilter={setBody} />
+        <AprobacionTable
+          data={registros}
+          filter={body}
+          setFilter={setBody}
+          resetState={resetState}
+        />
       </div>
     </div>
   );

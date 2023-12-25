@@ -9,6 +9,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { Provider } from "react-redux";
 // import { composeWithDevTools } from "redux-devtools-extension";
+import { ChakraProvider } from "@chakra-ui/react";
 
 import rootReducer from "./reducers";
 
@@ -20,11 +21,13 @@ const store = configureStore(
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <NextUIProvider>
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Provider>
+      <ChakraProvider>
+        <Provider store={store}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </Provider>
+      </ChakraProvider>
     </NextUIProvider>
   </React.StrictMode>
 );

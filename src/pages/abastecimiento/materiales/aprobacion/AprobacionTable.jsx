@@ -16,8 +16,9 @@ import { getColumns } from "../../../../functions/tableUtilities";
 import { uidsToRemoveMaterialAprobacion } from "../../../../components/utils";
 import ModalComponent from "../../../../components/Modal";
 
-const AprobacionTable = ({ data, filter, setFilter }) => {
+const AprobacionTable = ({ data, filter, setFilter, resetState }) => {
   const [open, setOpen] = useState(false);
+
   const allColumns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
 
   const columns = allColumns.filter(
@@ -122,6 +123,7 @@ const AprobacionTable = ({ data, filter, setFilter }) => {
         open={open}
         handleModal={handleModal}
         data={solpedData.current}
+        resetState={resetState}
       />
       <Table
         isCompact

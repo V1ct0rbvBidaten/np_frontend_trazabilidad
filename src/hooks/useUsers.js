@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getUsers } from "../api/auth";
 
-function useUsers(token, page, per_page) {
+function useUsers(token, page, per_page, reload) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,7 +14,7 @@ function useUsers(token, page, per_page) {
       })
       .catch((err) => setError(err))
       .finally(() => setLoading(false));
-  }, [page, per_page]);
+  }, [page, per_page, reload]);
 
   return { data, loading, error };
 }

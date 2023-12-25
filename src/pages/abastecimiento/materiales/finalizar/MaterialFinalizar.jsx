@@ -19,9 +19,17 @@ const initialState = {
 
 const MaterialFinalizar = ({ user }) => {
   const [body, setBody] = useState(initialState);
+  const [reload, setReload] = useState(false);
 
-  const { data: registros, loading } = useR2Trazabilidad(user.token, body);
+  const resetState = () => {
+    setReload(!reload);
+  };
 
+  const { data: registros, loading } = useR2Trazabilidad(
+    user.token,
+    body,
+    reload
+  );
   if (loading)
     return (
       <div>
@@ -37,7 +45,12 @@ const MaterialFinalizar = ({ user }) => {
       <MaterialesTitle etapa={"Confirmar entrega de solicitudes"} />
 
       <div className="flex mt-2 w-full flex-col">
-        <FinalizarTable data={registros} filter={body} setFilter={setBody} />
+        <FinalizarTable
+          data={registros}
+          filter={body}
+          resetState={resetState}
+          setFilter={setBody}
+        />
       </div>
     </div>
   );

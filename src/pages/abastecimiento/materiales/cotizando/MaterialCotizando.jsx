@@ -1,7 +1,8 @@
 import { useState } from "react";
 import MaterialesTitle from "../MaterialesTitle";
-import DespacharTable from "./DespacharTable";
 import useR2Trazabilidad from "../../../../hooks/useR2andTrazabilidadData";
+import CotizandoTable from "./CotizandoTable";
+import { ESTADO_COTIZANDO } from "../../../../components/estados_proceso";
 
 const initialState = {
   page: 1,
@@ -15,10 +16,10 @@ const initialState = {
   grupo_compra: null,
   grupo_articulo: null,
 
-  estado_pedido: "Aprobada",
+  estado_pedido: ESTADO_COTIZANDO,
 };
 
-const MaterialDespachar = ({ user }) => {
+const MaterialCotizando = ({ user }) => {
   const [body, setBody] = useState(initialState);
   const [reload, setReload] = useState(false);
 
@@ -35,7 +36,7 @@ const MaterialDespachar = ({ user }) => {
   if (loading)
     return (
       <div>
-        <MaterialesTitle etapa={"Despachar solicitudes"} />
+        <MaterialesTitle etapa={"Solicitudes en cotización"} />
         <div className="flex justify-center items-center">
           <h3>Cargando... </h3>
         </div>
@@ -44,10 +45,10 @@ const MaterialDespachar = ({ user }) => {
 
   return (
     <div>
-      <MaterialesTitle etapa={"Despachar solicitudes"} />
+      <MaterialesTitle etapa={"Solicitudes en cotización"} />
 
       <div className="flex mt-2 w-full flex-col">
-        <DespacharTable
+        <CotizandoTable
           data={registros}
           filter={body}
           setFilter={setBody}
@@ -58,4 +59,4 @@ const MaterialDespachar = ({ user }) => {
   );
 };
 
-export default MaterialDespachar;
+export default MaterialCotizando;

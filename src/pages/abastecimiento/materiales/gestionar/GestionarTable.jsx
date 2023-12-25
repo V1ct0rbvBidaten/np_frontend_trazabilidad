@@ -16,7 +16,7 @@ import { getColumns } from "../../../../functions/tableUtilities";
 import { uidsToRemoveMaterialGestionar } from "../../../../components/utils";
 import ModalComponent from "../../../../components/Modal";
 
-const GestionarTable = ({ data, filter, setFilter }) => {
+const GestionarTable = ({ data, filter, setFilter, resetState }) => {
   const [open, setOpen] = useState(false);
   const allColumns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
 
@@ -40,15 +40,11 @@ const GestionarTable = ({ data, filter, setFilter }) => {
   const solpedData = useRef([]);
 
   const handleModal = (value) => {
-    console.log(value);
     if (open === true) {
       setOpen(!open);
     } else {
       setOpen(!open);
       solpedData.current = value;
-      // solpedData.current = data.data.filter(
-      //   (d) => d.docentry === value.docentry
-      // );
     }
   };
 
@@ -129,6 +125,7 @@ const GestionarTable = ({ data, filter, setFilter }) => {
   return (
     <>
       <ModalComponent
+        resetState={resetState}
         open={open}
         handleModal={handleModal}
         data={solpedData.current}

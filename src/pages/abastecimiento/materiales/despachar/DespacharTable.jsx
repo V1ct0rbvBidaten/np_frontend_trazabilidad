@@ -16,7 +16,7 @@ import { getColumns } from "../../../../functions/tableUtilities";
 import { uidsToRemoveMaterialDespachar } from "../../../../components/utils";
 import ModalComponent from "../../../../components/Modal";
 
-const DespacharTable = ({ data, filter, setFilter }) => {
+const DespacharTable = ({ data, filter, setFilter, resetState }) => {
   const [open, setOpen] = useState(false);
   const allColumns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
 
@@ -122,6 +122,7 @@ const DespacharTable = ({ data, filter, setFilter }) => {
         open={open}
         handleModal={handleModal}
         data={solpedData.current}
+        resetState={resetState}
       />
       <Table
         isCompact

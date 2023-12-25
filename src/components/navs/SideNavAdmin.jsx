@@ -36,6 +36,11 @@ const AbastecimientoSideNav = ({ user }) => {
           type: "Menu",
         },
         {
+          name: "Cotizando",
+          route: "/abastecimiento/materiales/cotizando",
+          type: "Menu",
+        },
+        {
           name: "Aprobación",
           route: "/abastecimiento/materiales/aprobacion",
           type: "Menu",

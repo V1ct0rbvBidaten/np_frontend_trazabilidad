@@ -16,6 +16,18 @@ export const createTrazabilidad = async (token, body) => {
   );
 };
 
+export const updateTrazabilidad = async (token, id, body) => {
+  return await axios.put(
+    `${import.meta.env.VITE_API_URL}/users/update_trazabilidad/${id}`,
+    body,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
 export const getSolicitudesNoGestionadas = async (token, body) => {
   const {
     page,

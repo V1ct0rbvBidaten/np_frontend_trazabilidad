@@ -2,11 +2,10 @@ import { useState } from "react";
 import MaterialesTitle from "../MaterialesTitle";
 import GestionarTable from "./GestionarTable";
 import useR2Data from "../../../../hooks/useR2Data";
-import useR2pp from "../../../../hooks/useR2pp";
 
 const initialState = {
   page: 1,
-  per_page: 5,
+  per_page: 10,
   fecha_creacion_solped_start: null,
   fecha_creacion_solped_end: null,
   ceco: null,
@@ -19,8 +18,13 @@ const initialState = {
 
 const MaterialGestionar = ({ user }) => {
   const [body, setBody] = useState(initialState);
+  const [reload, setReload] = useState(false);
 
-  const { data: registros, loading } = useR2Data(user.token, body);
+  const resetState = () => {
+    setReload(!reload);
+  };
+
+  const { data: registros, loading } = useR2Data(user.token, body, reload);
 
   if (loading)
     return (
@@ -37,7 +41,12 @@ const MaterialGestionar = ({ user }) => {
       <MaterialesTitle etapa={"Solicitudes a gestionar"} />
 
       <div className="flex mt-2 w-full flex-col">
-        <GestionarTable data={registros} filter={body} setFilter={setBody} />
+        <GestionarTable
+          data={registros}
+          filter={body}
+          setFilter={setBody}
+          resetState={resetState}
+        />
       </div>
     </div>
   );

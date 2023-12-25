@@ -16,7 +16,7 @@ import { getColumns } from "../../../../functions/tableUtilities";
 import { uidsToRemoveMaterialFinalizar } from "../../../../components/utils";
 import ModalComponent from "../../../../components/Modal";
 
-const FinalizarTable = ({ data, filter, setFilter }) => {
+const FinalizarTable = ({ data, filter, setFilter, resetState }) => {
   const [open, setOpen] = useState(false);
   const allColumns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
 
@@ -46,9 +46,6 @@ const FinalizarTable = ({ data, filter, setFilter }) => {
     } else {
       setOpen(!open);
       solpedData.current = value;
-      // solpedData.current = data.data.filter(
-      //   (d) => d.docentry === value.docentry
-      // );
     }
   };
 
@@ -122,6 +119,7 @@ const FinalizarTable = ({ data, filter, setFilter }) => {
       <ModalComponent
         open={open}
         handleModal={handleModal}
+        resetState={resetState}
         data={solpedData.current}
       />
       <Table

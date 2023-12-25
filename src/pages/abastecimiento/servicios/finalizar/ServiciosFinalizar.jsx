@@ -2,6 +2,7 @@ import { useState } from "react";
 import ServiciosTitle from "../ServiciosTitle";
 import FinalizarTable from "./FinalizarTable";
 import useR2Trazabilidad from "../../../../hooks/useR2andTrazabilidadData";
+import { ESTADO_DESPACHAR } from "../../../../components/estados_proceso";
 
 const initialState = {
   page: 1,
@@ -14,6 +15,7 @@ const initialState = {
   solicitante: null,
   grupo_compra: null,
   grupo_articulo: null,
+  estado_pedido: ESTADO_DESPACHAR,
 };
 
 const ServiciosFinalizar = ({ user }) => {

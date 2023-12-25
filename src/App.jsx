@@ -21,6 +21,7 @@ import ServiciosFinalizar from "./pages/abastecimiento/servicios/finalizar/Servi
 import UsersList from "./pages/abastecimiento/configuraciones/UsersList";
 import HomeUser from "./pages/solicitantes/home/HomeUser";
 import UserRoute from "./components/routes/UserRoute";
+import MaterialCotizando from "./pages/abastecimiento/materiales/cotizando/MaterialCotizando";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -67,6 +68,11 @@ const App = () => {
             exact
             path="/abastecimiento/materiales/gestionar"
             element={<AdminRoute Component={MaterialGestionar} />}
+          />
+          <Route
+            exact
+            path="/abastecimiento/materiales/cotizando"
+            element={<AdminRoute Component={MaterialCotizando} />}
           />
           <Route
             exact
