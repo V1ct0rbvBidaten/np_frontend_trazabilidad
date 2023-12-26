@@ -53,7 +53,7 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <div className="h-screen flex flex-col justify-between">
+    <div className="h-max flex flex-col justify-between">
       <ToastContainer />
 
       <div className="flex-1 overflow-y-scroll">

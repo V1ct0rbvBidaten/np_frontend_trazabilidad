@@ -15,14 +15,12 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 
-import {
-  MagnifyingGlassIcon,
-  ChevronDownIcon,
-} from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon, FunnelIcon } from "@heroicons/react/24/solid";
 import { getColumns } from "../functions/tableUtilities";
 
 import ModalComponent from "./Modal";
 import { capitalize } from "../functions/utils";
+import ModalFilterColumns from "./ModalFilterColumns";
 
 const INITIAL_VISIBLE_COLUMNS = [
   "id_solped",
@@ -34,10 +32,9 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 const DataTableMateriales = ({ data, filter, setFilter, resetState }) => {
   const [open, setOpen] = useState(false);
+  const [openFilterColumns, setOpenFilterColumns] = useState(false);
 
-  const [visibleColumns, setVisibleColumns] = useState(
-    new Set(INITIAL_VISIBLE_COLUMNS)
-  );
+  const [visibleColumns, setVisibleColumns] = useState(INITIAL_VISIBLE_COLUMNS);
 
   const columns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
 
@@ -77,6 +74,11 @@ const DataTableMateriales = ({ data, filter, setFilter, resetState }) => {
     }
   };
 
+  const handleModalFilterColumns = () => {
+    console.log(openFilterColumns);
+    setOpenFilterColumns(!openFilterColumns);
+  };
+
   const renderCell = useCallback((value, columnKey) => {
     const cellValue = value[columnKey];
 
@@ -99,38 +101,18 @@ const DataTableMateriales = ({ data, filter, setFilter, resetState }) => {
 
   const pages = data.total_pages;
 
-  const btnRef = useRef();
-
   const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-end items-center gap-4">
-          <Dropdown>
-            <DropdownTrigger className="hidden sm:flex">
-              <Button
-                endContent={<ChevronDownIcon className="h-6" />}
-                variant="flat"
-                size="sm"
-                className="bg-foreground text-white"
-              >
-                Filtrar Columnas
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              disallowEmptySelection
-              aria-label="Table Columns"
-              closeOnSelect={false}
-              selectedKeys={visibleColumns}
-              selectionMode="multiple"
-              onSelectionChange={setVisibleColumns}
-            >
-              {columns.map((column) => (
-                <DropdownItem key={column.uid} className="capitalize">
-                  {capitalize(column.name)}
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
+          <Button
+            className="bg-foreground text-white"
+            size="sm"
+            startContent={<FunnelIcon className="h-6" />}
+            onClick={handleModalFilterColumns}
+          >
+            Filtrar Columnas
+          </Button>
           <label className="flex items-center text-default-400 text-small">
             Filas por pagina:
             <select
@@ -148,7 +130,7 @@ const DataTableMateriales = ({ data, filter, setFilter, resetState }) => {
         </div>
       </div>
     );
-  }, [filter, visibleColumns]);
+  }, [filter, visibleColumns, openFilterColumns]);
 
   const bottomContent = useMemo(() => {
     return (
@@ -176,6 +158,13 @@ const DataTableMateriales = ({ data, filter, setFilter, resetState }) => {
         handleModal={handleModal}
         data={solpedData.current}
         resetState={resetState}
+      />
+      <ModalFilterColumns
+        visibleColumns={visibleColumns}
+        columns={columns}
+        setVisibleColumns={setVisibleColumns}
+        open={openFilterColumns}
+        handleModal={handleModalFilterColumns}
       />
       <Table
         isCompact

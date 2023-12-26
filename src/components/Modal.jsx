@@ -22,7 +22,7 @@ import {
   ESTADO_EN_APROBACION_APROBADA,
   ESTADO_FINALIZAR,
   ESTADO_GESTIONAR,
-  ESTAdO_EN_PROCESO,
+  ESTADO_EN_PROCESO,
 } from "./estados_proceso";
 
 const ModalComponent = ({ data, open, handleModal, resetState }) => {
@@ -72,7 +72,7 @@ const ModalComponent = ({ data, open, handleModal, resetState }) => {
   let flujo = [
     { title: ESTADO_GESTIONAR },
     { title: ESTADO_COTIZANDO },
-    { title: ESTAdO_EN_PROCESO },
+    { title: ESTADO_EN_PROCESO },
     { title: ESTADO_EN_APROBACION_APROBADA },
     { title: ESTADO_DESPACHAR },
     { title: ESTADO_FINALIZAR },
@@ -345,7 +345,7 @@ const ModalComponent = ({ data, open, handleModal, resetState }) => {
                   <Stepper activeStep={index}>
                     <Step label={ESTADO_GESTIONAR} />
                     <Step label={ESTADO_COTIZANDO} />
-                    <Step label={ESTAdO_EN_PROCESO} />
+                    <Step label={ESTADO_EN_PROCESO} />
                     <Step label={ESTADO_EN_APROBACION_APROBADA} />
 
                     <Step label={ESTADO_DESPACHAR} />

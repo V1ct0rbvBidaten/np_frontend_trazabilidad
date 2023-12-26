@@ -80,45 +80,22 @@ export const getSolicitudesNoGestionadas = async (token, body) => {
 };
 
 export const getR2Trazabilidad = async (token, body) => {
-  const {
-    page,
-    per_page,
-    fecha_creacion_solped_start,
-    fecha_creacion_solped_end,
-    ceco,
-    categoria_item,
-    item,
-    solicitante,
-    grupo_compra,
-    grupo_articulo,
-    estado_pedido,
-  } = body;
+  let queryParams = new URLSearchParams();
 
-  // Crear un objeto con los parámetros
-  const params = {
-    page,
-    per_page,
-    fecha_creacion_solped_start,
-    fecha_creacion_solped_end,
-    ceco,
-    categoria_item,
-    item,
-    solicitante,
-    grupo_compra,
-    grupo_articulo,
-    estado_pedido,
-  };
-
-  // Filtrar los parámetros que no están vacíos
-  const filteredParams = Object.entries(params).reduce((acc, [key, value]) => {
-    if (value) {
-      acc[key] = value;
+  Object.entries(body).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      // If the value is an array, add each item as a separate parameter
+      value.forEach((item) => {
+        if (item) queryParams.append(key, item);
+      });
+    } else if (value) {
+      // If the value is not an array and is not empty, add it as a parameter
+      queryParams.append(key, value);
     }
-    return acc;
-  }, {});
+  });
 
-  // Construir la cadena de consulta (query string)
-  const queryString = new URLSearchParams(filteredParams).toString();
+  // Construct query string
+  const queryString = queryParams.toString();
 
   console.log(queryString);
 

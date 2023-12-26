@@ -10,6 +10,10 @@ import HomeTable from "./HomeTable";
 
 import { useState } from "react";
 import useR2Trazabilidad from "../../../hooks/useR2andTrazabilidadData";
+import {
+  ESTADO_COTIZANDO,
+  ESTADO_EN_PROCESO,
+} from "../../../components/estados_proceso";
 
 const initialStateMaterial = {
   page: 1,

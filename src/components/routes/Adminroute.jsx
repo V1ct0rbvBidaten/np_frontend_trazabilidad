@@ -7,7 +7,7 @@ const AdminRoute = ({ Component }) => {
 
   return user && user.token && user.role === "admin" ? (
     <>
-      <div className="flex min-h-screen">
+      <div className=" flex min-h-screen">
         <AbastecimientoSideNav user={user} />
 
         <main className="p-7 w-full bg-stone-50">
