@@ -28,6 +28,7 @@ const INITIAL_VISIBLE_COLUMNS = [
   "solicitante",
   "item",
   "detalle",
+  "stock",
 ];
 
 const DataTableMateriales = ({ data, filter, setFilter, resetState }) => {
@@ -83,6 +84,16 @@ const DataTableMateriales = ({ data, filter, setFilter, resetState }) => {
     const cellValue = value[columnKey];
 
     switch (columnKey) {
+      case "stock":
+        return cellValue === "BODEGA" ? (
+          <Button size="sm" className="bg-emerald-500 w-50 text-white">
+            BODEGA
+          </Button>
+        ) : (
+          <Button size="sm" className="bg-amber-500 w-50 text-white">
+            COMPRAR
+          </Button>
+        );
       case "detalle":
         return (
           <Button

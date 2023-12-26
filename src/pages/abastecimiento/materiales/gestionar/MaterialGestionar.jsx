@@ -1,7 +1,7 @@
 import { useState } from "react";
 import MaterialesTitle from "../MaterialesTitle";
-import GestionarTable from "./GestionarTable";
 import useR2Data from "../../../../hooks/useR2Data";
+import DataTableMateriales from "../../../../components/DataTableMateriales";
 
 const initialState = {
   page: 1,
@@ -41,7 +41,7 @@ const MaterialGestionar = ({ user }) => {
       <MaterialesTitle etapa={"Solicitudes a gestionar"} />
 
       <div className="flex mt-2 w-full flex-col">
-        <GestionarTable
+        <DataTableMateriales
           data={registros}
           filter={body}
           setFilter={setBody}

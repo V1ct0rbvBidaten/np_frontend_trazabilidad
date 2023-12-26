@@ -1,11 +1,11 @@
 import { useState } from "react";
 import ServiciosTitle from "../ServiciosTitle";
-import AprobacionTable from "./AprobacionTable";
 import useR2Data from "../../../../hooks/useR2Data";
+import DataTableMateriales from "../../../../components/DataTableMateriales";
 
 const initialState = {
   page: 1,
-  per_page: 5,
+  per_page: 10,
   fecha_creacion_solped_start: null,
   fecha_creacion_solped_end: null,
   ceco: null,
@@ -37,7 +37,11 @@ const ServiciosAprobacion = ({ user }) => {
       <ServiciosTitle etapa={"Solicitudes en proceso de aprobación"} />
 
       <div className="flex mt-2 w-full flex-col">
-        <AprobacionTable data={registros} filter={body} setFilter={setBody} />
+        <DataTableMateriales
+          data={registros}
+          filter={body}
+          setFilter={setBody}
+        />
       </div>
     </div>
   );

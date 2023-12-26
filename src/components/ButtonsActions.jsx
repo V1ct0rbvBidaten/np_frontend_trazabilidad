@@ -91,9 +91,20 @@ const ButtonActions = ({ data, handleModal, resetState }) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
+  function formatTimestamp(date) {
+    let day = date.getDate().toString().padStart(2, "0");
+    let month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
+    let year = date.getFullYear();
+    let hours = date.getHours().toString().padStart(2, "0");
+    let minutes = date.getMinutes().toString().padStart(2, "0");
+    let seconds = date.getSeconds().toString().padStart(2, "0");
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+
   const handleDespachar = () => {
     values.pkey = pkey;
-    values.fecha_despacho = Date.now();
+    values.fecha_despachada = formatTimestamp(new Date());
     values.estado_pedido = ESTADO_DESPACHAR;
 
     if (!id) {
@@ -114,17 +125,6 @@ const ButtonActions = ({ data, handleModal, resetState }) => {
         });
     }
   };
-
-  function formatTimestamp(date) {
-    let day = date.getDate().toString().padStart(2, "0");
-    let month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-    let year = date.getFullYear();
-    let hours = date.getHours().toString().padStart(2, "0");
-    let minutes = date.getMinutes().toString().padStart(2, "0");
-    let seconds = date.getSeconds().toString().padStart(2, "0");
-
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  }
 
   const handleCotizar = () => {
     values.pkey = pkey;

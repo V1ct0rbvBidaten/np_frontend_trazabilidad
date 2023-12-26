@@ -1,8 +1,8 @@
 import { useState } from "react";
 import ServiciosTitle from "../ServiciosTitle";
-import FinalizarTable from "./FinalizarTable";
 import useR2Trazabilidad from "../../../../hooks/useR2andTrazabilidadData";
 import { ESTADO_DESPACHAR } from "../../../../components/estados_proceso";
+import DataTableMateriales from "../../../../components/DataTableMateriales";
 
 const initialState = {
   page: 1,
@@ -38,7 +38,11 @@ const ServiciosFinalizar = ({ user }) => {
       <ServiciosTitle etapa={"Confirmar entrega de solicitudes"} />
 
       <div className="flex mt-2 w-full flex-col">
-        <FinalizarTable data={registros} filter={body} setFilter={setBody} />
+        <DataTableMateriales
+          data={registros}
+          filter={body}
+          setFilter={setBody}
+        />
       </div>
     </div>
   );
