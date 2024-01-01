@@ -1,5 +1,6 @@
 import { useState } from "react";
 import MaterialesTitle from "../MaterialesTitle";
+import { useSelector } from "react-redux";
 import useR2Data from "../../../../hooks/useR2Data";
 import DataTableMateriales from "../../../../components/DataTableMateriales";
 
@@ -17,14 +18,16 @@ const initialState = {
 };
 
 const MaterialGestionar = ({ user }) => {
+  const filter = useSelector((state) => state.filter);
   const [body, setBody] = useState(initialState);
   const [reload, setReload] = useState(false);
 
   const resetState = () => {
     setReload(!reload);
   };
+  filter.estado_pedido = body.estado_pedido;
 
-  const { data: registros, loading } = useR2Data(user.token, body, reload);
+  const { data: registros, loading } = useR2Data(user.token, filter, reload);
 
   if (loading)
     return (
@@ -43,8 +46,9 @@ const MaterialGestionar = ({ user }) => {
       <div className="flex mt-2 w-full flex-col">
         <DataTableMateriales
           data={registros}
-          filter={body}
+          filter={filter}
           setFilter={setBody}
+          user={user}
           resetState={resetState}
         />
       </div>

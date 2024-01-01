@@ -1,5 +1,6 @@
 import { useState } from "react";
 import MaterialesTitle from "../MaterialesTitle";
+import { useSelector } from "react-redux";
 import useR2Trazabilidad from "../../../../hooks/useR2andTrazabilidadData";
 import { ESTADO_COTIZANDO } from "../../../../components/estados_proceso";
 import DataTableMateriales from "../../../../components/DataTableMateriales";
@@ -20,6 +21,8 @@ const initialState = {
 };
 
 const MaterialCotizando = ({ user }) => {
+  const filter = useSelector((state) => state.filter);
+
   const [body, setBody] = useState(initialState);
   const [reload, setReload] = useState(false);
 
@@ -27,9 +30,11 @@ const MaterialCotizando = ({ user }) => {
     setReload(!reload);
   };
 
+  filter.estado_pedido = body.estado_pedido;
+
   const { data: registros, loading } = useR2Trazabilidad(
     user.token,
-    body,
+    filter,
     reload
   );
 
@@ -46,11 +51,11 @@ const MaterialCotizando = ({ user }) => {
   return (
     <div>
       <MaterialesTitle etapa={"Solicitudes en cotización"} />
-
       <div className="flex mt-2 w-full flex-col">
         <DataTableMateriales
           data={registros}
-          filter={body}
+          filter={filter}
+          user={user}
           setFilter={setBody}
           resetState={resetState}
         />

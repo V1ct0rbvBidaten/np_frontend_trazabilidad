@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import MaterialesTitle from "../MaterialesTitle";
 import useR2Trazabilidad from "../../../../hooks/useR2andTrazabilidadData";
 import DataTableMateriales from "../../../../components/DataTableMateriales";
@@ -20,6 +21,7 @@ const initialState = {
 };
 
 const MaterialDespachar = ({ user }) => {
+  const filter = useSelector((state) => state.filter);
   const [body, setBody] = useState(initialState);
   const [reload, setReload] = useState(false);
 
@@ -27,9 +29,11 @@ const MaterialDespachar = ({ user }) => {
     setReload(!reload);
   };
 
+  filter.estado_pedido = body.estado_pedido;
+
   const { data: registros, loading } = useR2Trazabilidad(
     user.token,
-    body,
+    filter,
     reload
   );
 
@@ -50,9 +54,10 @@ const MaterialDespachar = ({ user }) => {
       <div className="flex mt-2 w-full flex-col">
         <DataTableMateriales
           data={registros}
-          filter={body}
+          filter={filter}
           setFilter={setBody}
           resetState={resetState}
+          user={user}
         />
       </div>
     </div>

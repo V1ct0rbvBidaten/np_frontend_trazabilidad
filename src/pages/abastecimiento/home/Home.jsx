@@ -14,6 +14,7 @@ import {
   ESTADO_COTIZANDO,
   ESTADO_EN_PROCESO,
 } from "../../../components/estados_proceso";
+import DataTableMateriales from "../../../components/DataTableMateriales";
 
 const initialStateMaterial = {
   page: 1,

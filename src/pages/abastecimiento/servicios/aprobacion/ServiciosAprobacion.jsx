@@ -40,6 +40,7 @@ const ServiciosAprobacion = ({ user }) => {
         <DataTableMateriales
           data={registros}
           filter={body}
+          user={user}
           setFilter={setBody}
         />
       </div>

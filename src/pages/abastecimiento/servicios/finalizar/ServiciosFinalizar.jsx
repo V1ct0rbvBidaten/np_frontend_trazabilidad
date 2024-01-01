@@ -42,6 +42,7 @@ const ServiciosFinalizar = ({ user }) => {
           data={registros}
           filter={body}
           setFilter={setBody}
+          user={user}
         />
       </div>
     </div>

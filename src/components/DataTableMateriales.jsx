@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState, useRef } from "react";
+import { useDispatch } from "react-redux";
 import {
   Table,
   TableHeader,
@@ -9,18 +10,18 @@ import {
   Button,
   Pagination,
   Spinner,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
 } from "@nextui-org/react";
 
-import { MagnifyingGlassIcon, FunnelIcon } from "@heroicons/react/24/solid";
+import {
+  MagnifyingGlassIcon,
+  FunnelIcon,
+  TableCellsIcon,
+} from "@heroicons/react/24/solid";
 import { getColumns } from "../functions/tableUtilities";
 
 import ModalComponent from "./Modal";
-import { capitalize } from "../functions/utils";
 import ModalFilterColumns from "./ModalFilterColumns";
+import ModalFilters from "./ModalFilters";
 
 const INITIAL_VISIBLE_COLUMNS = [
   "id_solped",
@@ -29,11 +30,29 @@ const INITIAL_VISIBLE_COLUMNS = [
   "item",
   "detalle",
   "stock",
+  "estado_pedido",
 ];
 
-const DataTableMateriales = ({ data, filter, setFilter, resetState }) => {
+const filterState = {
+  page: 1,
+  per_page: 10,
+  fecha_creacion_solped_start: null,
+  fecha_creacion_solped_end: null,
+  ceco: null,
+  categoria_item: "material",
+  item: null,
+  solicitante: null,
+  grupo_compra: null,
+  grupo_articulo: null,
+};
+
+const DataTableMateriales = ({ data, filter, setFilter, resetState, user }) => {
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(false);
+  const [openFilter, setOpenFilter] = useState(false);
   const [openFilterColumns, setOpenFilterColumns] = useState(false);
+  const [filterData, setFilterData] = useState(filterState);
 
   const [visibleColumns, setVisibleColumns] = useState(INITIAL_VISIBLE_COLUMNS);
 
@@ -73,6 +92,10 @@ const DataTableMateriales = ({ data, filter, setFilter, resetState }) => {
       //   (d) => d.docentry === value.docentry
       // );
     }
+  };
+
+  const handleModalFilter = () => {
+    setOpenFilter(!openFilter);
   };
 
   const handleModalFilterColumns = () => {
@@ -116,6 +139,14 @@ const DataTableMateriales = ({ data, filter, setFilter, resetState }) => {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-end items-center gap-4">
+          <Button
+            className="bg-purple-700 text-white"
+            size="sm"
+            startContent={<TableCellsIcon className="h-6" />}
+            onClick={handleModalFilter}
+          >
+            Filtrar Tabla
+          </Button>
           <Button
             className="bg-foreground text-white"
             size="sm"
@@ -162,6 +193,20 @@ const DataTableMateriales = ({ data, filter, setFilter, resetState }) => {
     );
   }, [filter]);
 
+  const handleFilterChange = (e) => {
+    setFilterData({ ...filterData, [e.target.name]: e.target.value });
+  };
+
+  const handleFilterSubmit = () => {
+    console.log(filterData);
+    dispatch({
+      type: "FILTER_DATA",
+      payload: filterData,
+    });
+
+    resetState();
+  };
+
   return (
     <>
       <ModalComponent
@@ -176,6 +221,14 @@ const DataTableMateriales = ({ data, filter, setFilter, resetState }) => {
         setVisibleColumns={setVisibleColumns}
         open={openFilterColumns}
         handleModal={handleModalFilterColumns}
+      />
+      <ModalFilters
+        open={openFilter}
+        handleFilterSubmit={handleFilterSubmit}
+        handleFilterChange={handleFilterChange}
+        user={user}
+        filterData={filterData}
+        handleModal={handleModalFilter}
       />
       <Table
         isCompact
