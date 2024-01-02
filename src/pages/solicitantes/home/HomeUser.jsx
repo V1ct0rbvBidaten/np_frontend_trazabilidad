@@ -27,7 +27,7 @@ const initialDinamicState = {
   categoria_item: "material",
 };
 
-const HomeUser = ({ user }) => {
+const HomeUser = ({ user, userQuery }) => {
   const filter = useSelector((state) => state.filter);
 
   // const userQuery = JSON.parse(user.query);
@@ -42,7 +42,7 @@ const HomeUser = ({ user }) => {
 
   const { data: registros, loading } = useR2Trazabilidad(
     user.token,
-    filter,
+    userQuery,
     dinamicState,
     reload
   );
