@@ -34,19 +34,24 @@ const INITIAL_VISIBLE_COLUMNS = [
 ];
 
 const filterState = {
-  page: 1,
-  per_page: 10,
   fecha_creacion_solped_start: null,
   fecha_creacion_solped_end: null,
   ceco: null,
-  categoria_item: "material",
   item: null,
   solicitante: null,
   grupo_compra: null,
   grupo_articulo: null,
 };
 
-const DataTableMateriales = ({ data, filter, setFilter, resetState, user }) => {
+const DataTableMateriales = ({
+  data,
+  filter,
+  setFilter,
+  resetState,
+  user,
+  dinamicState,
+  setDinamicState,
+}) => {
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
@@ -67,8 +72,6 @@ const DataTableMateriales = ({ data, filter, setFilter, resetState, user }) => {
   }, [visibleColumns]);
 
   const {
-    page,
-    per_page,
     fecha_creacion_solped_start,
     fecha_creacion_solped_end,
     ceco,
@@ -78,6 +81,8 @@ const DataTableMateriales = ({ data, filter, setFilter, resetState, user }) => {
     grupo_compra,
     grupo_articulo,
   } = filter;
+
+  const { page, per_page } = dinamicState;
 
   const solpedData = useRef([]);
 
@@ -161,7 +166,10 @@ const DataTableMateriales = ({ data, filter, setFilter, resetState, user }) => {
               className="bg-transparent outline-none text-default-400 text-small"
               value={per_page}
               onChange={(e) =>
-                setFilter({ ...filter, per_page: Number(e.target.value) })
+                setDinamicState({
+                  ...dinamicState,
+                  per_page: Number(e.target.value),
+                })
               }
             >
               <option value="5">5</option>
@@ -172,7 +180,7 @@ const DataTableMateriales = ({ data, filter, setFilter, resetState, user }) => {
         </div>
       </div>
     );
-  }, [filter, visibleColumns, openFilterColumns]);
+  }, [dinamicState, visibleColumns, openFilterColumns]);
 
   const bottomContent = useMemo(() => {
     return (
@@ -184,7 +192,9 @@ const DataTableMateriales = ({ data, filter, setFilter, resetState, user }) => {
           color="secondary"
           page={page}
           total={pages}
-          onChange={(page) => setFilter({ ...filter, page: Number(page) })}
+          onChange={(page) =>
+            setDinamicState({ ...dinamicState, page: Number(page) })
+          }
         />
         <span className="text-default-400 text-small">
           Total {data.total_count} solicitudes

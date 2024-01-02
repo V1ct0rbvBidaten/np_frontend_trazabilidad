@@ -6,33 +6,44 @@ import {
   Tab,
   Tabs,
 } from "@nextui-org/react";
-import HomeTable from "./HomeTable";
+import { useSelector, useDispatch } from "react-redux";
 
 import { useState } from "react";
 import useR2Trazabilidad from "../../../hooks/useR2andTrazabilidadData";
-import {
-  ESTADO_COTIZANDO,
-  ESTADO_EN_PROCESO,
-} from "../../../components/estados_proceso";
 import DataTableMateriales from "../../../components/DataTableMateriales";
 
-const initialStateMaterial = {
-  page: 1,
-  per_page: 10,
+const initialState = {
   fecha_creacion_solped_start: null,
   fecha_creacion_solped_end: null,
   ceco: null,
-  categoria_item: null,
   item: null,
   solicitante: null,
   grupo_compra: null,
   grupo_articulo: null,
 };
 
-const Home = ({ user }) => {
-  const [body, setBody] = useState(initialStateMaterial);
+const initialDinamicState = {
+  page: 1,
+  per_page: 10,
+};
 
-  const { data: registros, loading } = useR2Trazabilidad(user.token, body);
+const Home = ({ user }) => {
+  const filter = useSelector((state) => state.filter);
+
+  const [body, setBody] = useState(initialState);
+  const [dinamicState, setDinamicState] = useState(initialDinamicState);
+  const [reload, setReload] = useState(false);
+
+  const resetState = () => {
+    setReload(!reload);
+  };
+
+  const { data: registros, loading } = useR2Trazabilidad(
+    user.token,
+    filter,
+    dinamicState,
+    reload
+  );
 
   if (loading)
     return (
@@ -70,7 +81,15 @@ const Home = ({ user }) => {
       </Card>
 
       <div className="flex mt-5 w-full flex-col">
-        <HomeTable data={registros} filter={body} setFilter={setBody} />
+        <DataTableMateriales
+          data={registros}
+          user={user}
+          dinamicState={dinamicState}
+          setDinamicState={setDinamicState}
+          resetState={resetState}
+          filter={body}
+          setFilter={setBody}
+        />
       </div>
     </div>
   );

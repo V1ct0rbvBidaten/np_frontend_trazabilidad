@@ -1,26 +1,42 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import ServiciosTitle from "../ServiciosTitle";
 import useR2Data from "../../../../hooks/useR2Data";
 import DataTableMateriales from "../../../../components/DataTableMateriales";
 
 const initialState = {
-  page: 1,
-  per_page: 10,
   fecha_creacion_solped_start: null,
   fecha_creacion_solped_end: null,
   ceco: null,
-  categoria_item: "servicio",
   item: null,
   solicitante: null,
   grupo_compra: null,
   grupo_articulo: null,
-  estado_pedido: null,
+};
+
+const initialDinamicState = {
+  page: 1,
+  per_page: 10,
+  categoria_item: "servicio",
 };
 
 const ServiciosAprobacion = ({ user }) => {
-  const [body, setBody] = useState(initialState);
+  const filter = useSelector((state) => state.filter);
 
-  const { data: registros, loading } = useR2Data(user.token, body);
+  const [body, setBody] = useState(initialState);
+  const [dinamicState, setDinamicState] = useState(initialDinamicState);
+  const [reload, setReload] = useState(false);
+
+  const resetState = () => {
+    setReload(!reload);
+  };
+
+  const { data: registros, loading } = useR2Data(
+    user.token,
+    filter,
+    dinamicState,
+    reload
+  );
 
   if (loading)
     return (
@@ -40,6 +56,9 @@ const ServiciosAprobacion = ({ user }) => {
         <DataTableMateriales
           data={registros}
           filter={body}
+          dinamicState={dinamicState}
+          setDinamicState={setDinamicState}
+          resetState={resetState}
           user={user}
           setFilter={setBody}
         />

@@ -1,27 +1,44 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import ServiciosTitle from "../ServiciosTitle";
 import useR2Trazabilidad from "../../../../hooks/useR2andTrazabilidadData";
 import { ESTADO_DESPACHAR } from "../../../../components/estados_proceso";
 import DataTableMateriales from "../../../../components/DataTableMateriales";
 
 const initialState = {
-  page: 1,
-  per_page: 5,
   fecha_creacion_solped_start: null,
   fecha_creacion_solped_end: null,
   ceco: null,
-  categoria_item: "servicio",
   item: null,
   solicitante: null,
   grupo_compra: null,
   grupo_articulo: null,
+};
+
+const initialDinamicState = {
+  page: 1,
+  per_page: 10,
+  categoria_item: "servicio",
   estado_pedido: ESTADO_DESPACHAR,
 };
 
 const ServiciosFinalizar = ({ user }) => {
-  const [body, setBody] = useState(initialState);
+  const filter = useSelector((state) => state.filter);
 
-  const { data: registros, loading } = useR2Trazabilidad(user.token, body);
+  const [body, setBody] = useState(initialState);
+  const [dinamicState, setDinamicState] = useState(initialDinamicState);
+  const [reload, setReload] = useState(false);
+
+  const resetState = () => {
+    setReload(!reload);
+  };
+
+  const { data: registros, loading } = useR2Trazabilidad(
+    user.token,
+    filter,
+    dinamicState,
+    reload
+  );
 
   if (loading)
     return (
@@ -41,6 +58,9 @@ const ServiciosFinalizar = ({ user }) => {
         <DataTableMateriales
           data={registros}
           filter={body}
+          dinamicState={dinamicState}
+          resetState={resetState}
+          setDinamicState={setDinamicState}
           setFilter={setBody}
           user={user}
         />
