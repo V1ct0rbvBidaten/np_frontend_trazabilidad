@@ -207,224 +207,228 @@ const ButtonActions = ({ data, handleModal, resetState }) => {
       });
   };
 
-  return estado_pedido === ESTADO_EN_PROCESO ? (
-    <>
-      <Button
-        onPress={handleRechazar}
-        className="bg-rose-500 text-white"
-        radius="full"
-      >
-        Rechazar
-      </Button>
-      <Button
-        onPress={handleAprobar}
-        className="bg-emerald-500 text-white"
-        radius="full"
-      >
-        Aprobar
-      </Button>
-    </>
-  ) : estado_pedido === ESTADO_EN_APROBACION_APROBADA ? (
-    <>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Despachar solicitud
-              </ModalHeader>
-              <ModalBody>
-                <div>
-                  <Input
-                    label="Responsable despacho"
-                    labelPlacement="outside"
-                    placeholder=" "
-                    size="sm"
-                    className="w-full"
-                    value={values.responsable_depacho}
-                    name="responsable_despacho"
-                    onChange={handleChange}
-                    variant="bordered"
-                  />
-                  <Textarea
-                    label="Comentario despacho"
-                    labelPlacement="outside"
-                    placeholder=" "
-                    size="sm"
-                    className="w-full"
-                    value={values.comentario_despacho}
-                    onChange={handleChange}
-                    name="comentario_despacho"
-                    variant="bordered"
-                  />
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Cerrar
-                </Button>
+  return user.role === "admin" ? (
+    estado_pedido === ESTADO_EN_PROCESO ? (
+      <>
+        <Button
+          onPress={handleRechazar}
+          className="bg-rose-500 text-white"
+          radius="full"
+        >
+          Rechazar
+        </Button>
+        <Button
+          onPress={handleAprobar}
+          className="bg-emerald-500 text-white"
+          radius="full"
+        >
+          Aprobar
+        </Button>
+      </>
+    ) : estado_pedido === ESTADO_EN_APROBACION_APROBADA ? (
+      <>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1">
+                  Despachar solicitud
+                </ModalHeader>
+                <ModalBody>
+                  <div>
+                    <Input
+                      label="Responsable despacho"
+                      labelPlacement="outside"
+                      placeholder=" "
+                      size="sm"
+                      className="w-full"
+                      value={values.responsable_depacho}
+                      name="responsable_despacho"
+                      onChange={handleChange}
+                      variant="bordered"
+                    />
+                    <Textarea
+                      label="Comentario despacho"
+                      labelPlacement="outside"
+                      placeholder=" "
+                      size="sm"
+                      className="w-full"
+                      value={values.comentario_despacho}
+                      onChange={handleChange}
+                      name="comentario_despacho"
+                      variant="bordered"
+                    />
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="danger" variant="light" onPress={onClose}>
+                    Cerrar
+                  </Button>
 
-                <Button
-                  onPress={handleDespachar}
-                  className="bg-amber-500 text-white"
-                  radius="full"
-                >
-                  Despachar
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+                  <Button
+                    onPress={handleDespachar}
+                    className="bg-amber-500 text-white"
+                    radius="full"
+                  >
+                    Despachar
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+        <Button
+          // onPress={handleDespachar}
+          onClick={onOpenChange}
+          className="bg-amber-500 text-white"
+          radius="full"
+        >
+          Despachar
+        </Button>
+      </>
+    ) : estado_pedido === ESTADO_COTIZANDO ? (
       <Button
-        // onPress={handleDespachar}
-        onClick={onOpenChange}
+        onPress={handleProceso}
         className="bg-amber-500 text-white"
         radius="full"
       >
-        Despachar
+        Iniciar Proceso de Aprobación
       </Button>
-    </>
-  ) : estado_pedido === ESTADO_COTIZANDO ? (
-    <Button
-      onPress={handleProceso}
-      className="bg-amber-500 text-white"
-      radius="full"
-    >
-      Iniciar Proceso de Aprobación
-    </Button>
-  ) : estado_pedido === ESTADO_DESPACHAR ? (
-    <>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Despachar solicitud
-              </ModalHeader>
-              <ModalBody>
-                <div className="grid gap-4">
-                  <Input
-                    label="Receptor despacho"
-                    labelPlacement="outside"
-                    placeholder=" "
-                    size="sm"
-                    className="w-full"
-                    value={values.receptor_despacho}
-                    name="receptor_despacho"
-                    onChange={handleChange}
-                    variant="bordered"
-                  />
-                  <Input
-                    label="Nº documento de respaldo"
-                    labelPlacement="outside"
-                    placeholder=" "
-                    size="sm"
-                    className="w-full"
-                    value={values.nro_doc_respaldo}
-                    onChange={handleChange}
-                    name="nro_doc_respaldo"
-                    variant="bordered"
-                  />
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Cerrar
-                </Button>
+    ) : estado_pedido === ESTADO_DESPACHAR ? (
+      <>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1">
+                  Despachar solicitud
+                </ModalHeader>
+                <ModalBody>
+                  <div className="grid gap-4">
+                    <Input
+                      label="Receptor despacho"
+                      labelPlacement="outside"
+                      placeholder=" "
+                      size="sm"
+                      className="w-full"
+                      value={values.receptor_despacho}
+                      name="receptor_despacho"
+                      onChange={handleChange}
+                      variant="bordered"
+                    />
+                    <Input
+                      label="Nº documento de respaldo"
+                      labelPlacement="outside"
+                      placeholder=" "
+                      size="sm"
+                      className="w-full"
+                      value={values.nro_doc_respaldo}
+                      onChange={handleChange}
+                      name="nro_doc_respaldo"
+                      variant="bordered"
+                    />
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="danger" variant="light" onPress={onClose}>
+                    Cerrar
+                  </Button>
 
-                <Button
-                  onPress={handleFinalizar}
-                  className="bg-amber-500 text-white"
-                  radius="full"
-                >
-                  Finalizar solicitud
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-      <Button
-        // onPress={handleDespachar}
-        onClick={onOpenChange}
-        className="bg-amber-500 text-white"
-        radius="full"
-      >
-        Finalizar solicitud
-      </Button>
-    </>
-  ) : stock === "BODEGA" ? (
-    <>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Despachar solicitud
-              </ModalHeader>
-              <ModalBody>
-                <div>
-                  <Input
-                    label="Responsable despacho"
-                    labelPlacement="outside"
-                    placeholder=" "
-                    size="sm"
-                    className="w-full"
-                    value={values.responsable_depacho}
-                    name="responsable_despacho"
-                    onChange={handleChange}
-                    variant="bordered"
-                  />
-                  <Textarea
-                    label="Comentario despacho"
-                    labelPlacement="outside"
-                    placeholder=" "
-                    size="sm"
-                    className="w-full"
-                    value={values.comentario_despacho}
-                    onChange={handleChange}
-                    name="comentario_despacho"
-                    variant="bordered"
-                  />
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Cerrar
-                </Button>
+                  <Button
+                    onPress={handleFinalizar}
+                    className="bg-amber-500 text-white"
+                    radius="full"
+                  >
+                    Finalizar solicitud
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+        <Button
+          // onPress={handleDespachar}
+          onClick={onOpenChange}
+          className="bg-amber-500 text-white"
+          radius="full"
+        >
+          Finalizar solicitud
+        </Button>
+      </>
+    ) : stock === "BODEGA" ? (
+      <>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1">
+                  Despachar solicitud
+                </ModalHeader>
+                <ModalBody>
+                  <div>
+                    <Input
+                      label="Responsable despacho"
+                      labelPlacement="outside"
+                      placeholder=" "
+                      size="sm"
+                      className="w-full"
+                      value={values.responsable_depacho}
+                      name="responsable_despacho"
+                      onChange={handleChange}
+                      variant="bordered"
+                    />
+                    <Textarea
+                      label="Comentario despacho"
+                      labelPlacement="outside"
+                      placeholder=" "
+                      size="sm"
+                      className="w-full"
+                      value={values.comentario_despacho}
+                      onChange={handleChange}
+                      name="comentario_despacho"
+                      variant="bordered"
+                    />
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="danger" variant="light" onPress={onClose}>
+                    Cerrar
+                  </Button>
 
-                <Button
-                  onPress={handleDespachar}
-                  className="bg-amber-500 text-white"
-                  radius="full"
-                >
-                  Despachar
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-      <Button
-        // onPress={handleDespachar}
-        onClick={onOpenChange}
-        className="bg-amber-500 text-white"
-        radius="full"
-      >
-        Despachar
-      </Button>
-    </>
+                  <Button
+                    onPress={handleDespachar}
+                    className="bg-amber-500 text-white"
+                    radius="full"
+                  >
+                    Despachar
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+        <Button
+          // onPress={handleDespachar}
+          onClick={onOpenChange}
+          className="bg-amber-500 text-white"
+          radius="full"
+        >
+          Despachar
+        </Button>
+      </>
+    ) : (
+      <>
+        <Button
+          onPress={handleCotizar}
+          className="bg-amber-500 text-white"
+          radius="full"
+        >
+          Cotizar
+        </Button>
+      </>
+    )
   ) : (
-    <>
-      <Button
-        onPress={handleCotizar}
-        className="bg-amber-500 text-white"
-        radius="full"
-      >
-        Cotizar
-      </Button>
-    </>
+    <></>
   );
 };
 

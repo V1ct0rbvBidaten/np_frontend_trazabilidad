@@ -39,6 +39,7 @@ const App = () => {
                 email: r.data.email,
                 nombre_completo: r.data.nombre_completo,
                 role: r.data.role,
+                query: r.data.query,
                 token: localStorage.getItem("token"),
               },
             });

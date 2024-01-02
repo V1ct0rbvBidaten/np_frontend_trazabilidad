@@ -6,29 +6,46 @@ import {
   Tab,
   Tabs,
 } from "@nextui-org/react";
-import HomeUserTable from "./HomeUserTable";
-
+import DataTableMateriales from "../../../components/DataTableMateriales";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import useR2Trazabilidad from "../../../hooks/useR2andTrazabilidadData";
 
-const initialStateMaterial = {
-  page: 1,
-  per_page: 10,
+const initialState = {
   fecha_creacion_solped_start: null,
   fecha_creacion_solped_end: null,
   ceco: null,
-  categoria_item: null,
   item: null,
   solicitante: null,
   grupo_compra: null,
   grupo_articulo: null,
 };
 
+const initialDinamicState = {
+  page: 1,
+  per_page: 5,
+  categoria_item: "material",
+};
+
 const HomeUser = ({ user }) => {
-  const [body, setBody] = useState(initialStateMaterial);
+  const filter = useSelector((state) => state.filter);
 
-  const { data: registros, loading } = useR2Trazabilidad(user.token, body);
+  // const userQuery = JSON.parse(user.query);
 
+  const [body, setBody] = useState(initialState);
+  const [dinamicState, setDinamicState] = useState(initialDinamicState);
+  const [reload, setReload] = useState(false);
+
+  const resetState = () => {
+    setReload(!reload);
+  };
+
+  const { data: registros, loading } = useR2Trazabilidad(
+    user.token,
+    filter,
+    dinamicState,
+    reload
+  );
   if (loading)
     return (
       <div>
@@ -63,9 +80,16 @@ const HomeUser = ({ user }) => {
           <p className="text-stone-400">Resumen de solicitudes de pedimentos</p>
         </CardBody>
       </Card>
-
       <div className="flex mt-5 w-full flex-col">
-        <HomeUserTable data={registros} filter={body} setFilter={setBody} />
+        <DataTableMateriales
+          data={registros}
+          filter={body}
+          dinamicState={dinamicState}
+          setDinamicState={setDinamicState}
+          user={user}
+          setFilter={setBody}
+          resetState={resetState}
+        />
       </div>
     </div>
   );
