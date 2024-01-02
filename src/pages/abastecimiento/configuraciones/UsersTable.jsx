@@ -21,7 +21,7 @@ const UsersTable = ({ data, filter, setFilter }) => {
 
   const allColumns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
 
-  const uidsToRemove = ["contrasena", "activo", "fecha", "hora", "detalle"];
+  const uidsToRemove = ["contrasena", "activo", "fecha", "hora", "query"];
   const columns = allColumns.filter((item) => !uidsToRemove.includes(item.uid));
 
   const {
