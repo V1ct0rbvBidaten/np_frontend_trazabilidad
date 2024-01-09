@@ -16,36 +16,8 @@ const ModalFilterColumns = ({
   setVisibleColumns,
   visibleColumns,
   columns,
+  handleFilterColumnSubmit,
 }) => {
-  {
-    /* <Dropdown>
-            <DropdownTrigger className="hidden sm:flex">
-              <Button
-                endContent={<FunnelIcon className="h-6" />}
-                variant="flat"
-                size="sm"
-                className="bg-foreground text-white"
-              >
-                Filtrar Columnas
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              disallowEmptySelection
-              aria-label="Table Columns"
-              closeOnSelect={false}
-              selectedKeys={visibleColumns}
-              selectionMode="multiple"
-              onSelectionChange={setVisibleColumns}
-            >
-              {columns.map((column) => (
-                <DropdownItem key={column.uid} className="capitalize">
-                  {capitalize(column.name)}
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown> */
-  }
-
   return (
     <Modal size="5xl" isOpen={open} onOpenChange={handleModal}>
       <ModalContent>
@@ -77,6 +49,14 @@ const ModalFilterColumns = ({
             <ModalFooter>
               <Button color="danger" variant="light" onPress={onClose}>
                 Close
+              </Button>
+
+              <Button
+                color="success"
+                variant="light"
+                onPress={handleFilterColumnSubmit}
+              >
+                Guardar columnas
               </Button>
             </ModalFooter>
           </>

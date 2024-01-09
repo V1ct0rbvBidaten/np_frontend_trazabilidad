@@ -31,6 +31,18 @@ const initialState = {
   grupo_compra: null,
   grupo_articulo: null,
   proveedor: null,
+  fecha_borrador_oc_start: null,
+  fecha_borrador_oc_end: null,
+  fecha_creacion_oc_start: null,
+  fecha_creacion_oc_end: null,
+  docentry: null,
+  id_solped: null,
+  item_code: null,
+  id_aprobacion: null,
+  numero_oc: null,
+  borrador_oc: null,
+  id_borrador_oc: null,
+  estado: null,
 };
 
 const ModalFilters = ({
@@ -49,7 +61,7 @@ const ModalFilters = ({
   };
 
   const { data: ceco, loading } = useCeco(user.token, body, reload);
-  const { data: proveedor } = useProveedor(user.token, body, reload);
+  // const { data: proveedor } = useProveedor(user.token, body, reload);
   const { data: solicitante } = useSolicitante(user.token, body, reload);
   const { data: grupoArticulo } = useGrupoArticulos(user.token, body, reload);
   const { data: grupoCompra } = useGrupoCompra(user.token, body, reload);
@@ -73,7 +85,7 @@ const ModalFilters = ({
             </ModalHeader>
             <ModalBody>
               {/* {JSON.stringify(filterData)} */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-4 gap-4">
                 <Input
                   type="date"
                   label="Seleccionar fecha desde"
@@ -166,25 +178,51 @@ const ModalFilters = ({
                   ))}
                 </Select>
 
-                <Autocomplete
-                  label="Seleccionar proveedor"
+                <Input
+                  label="Seleccionar grupo compra"
                   placeholder="Proveedor"
                   name="proveedor"
-                  selectionMode="multiple"
                   value={filterData.proveedor}
                   onChange={handleFilterChange}
                   className="max-w-xs"
                   size="sm"
-                >
-                  {proveedor.data.map((item) => (
-                    <AutocompleteItem
-                      key={item.proveedor}
-                      value={item.proveedor}
-                    >
-                      {item.proveedor}
-                    </AutocompleteItem>
-                  ))}
-                </Autocomplete>
+                />
+
+                <Input
+                  label="Docentry"
+                  name="docentry"
+                  value={filterData.docentry}
+                  onChange={handleFilterChange}
+                  className="max-w-xs"
+                  size="sm"
+                />
+
+                <Input
+                  label="ID Solped"
+                  name="id_solped"
+                  value={filterData.id_solped}
+                  onChange={handleFilterChange}
+                  className="max-w-xs"
+                  size="sm"
+                />
+
+                <Input
+                  label="Nro OC"
+                  name="numero_oc"
+                  value={filterData.numero_oc}
+                  onChange={handleFilterChange}
+                  className="max-w-xs"
+                  size="sm"
+                />
+
+                <Input
+                  label="Nro Borrador OC"
+                  name="borrador_oc"
+                  value={filterData.borrador_oc}
+                  onChange={handleFilterChange}
+                  className="max-w-xs"
+                  size="sm"
+                />
               </div>
             </ModalBody>
             <ModalFooter>

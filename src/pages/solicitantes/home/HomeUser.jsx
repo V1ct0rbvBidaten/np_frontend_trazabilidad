@@ -29,6 +29,7 @@ const initialDinamicState = {
 
 const HomeUser = ({ user, userQuery }) => {
   const filter = useSelector((state) => state.filter);
+  const columnsFilter = useSelector((state) => state.columns);
 
   // const userQuery = JSON.parse(user.query);
 
@@ -84,6 +85,7 @@ const HomeUser = ({ user, userQuery }) => {
         <DataTableMateriales
           data={registros}
           filter={body}
+          columnsFilter={columnsFilter}
           dinamicState={dinamicState}
           setDinamicState={setDinamicState}
           user={user}

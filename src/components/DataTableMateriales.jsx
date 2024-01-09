@@ -41,13 +41,26 @@ const filterState = {
   solicitante: null,
   grupo_compra: null,
   grupo_articulo: null,
+  fecha_borrador_oc_start: null,
+  fecha_borrador_oc_end: null,
+  fecha_creacion_oc_start: null,
+  fecha_creacion_oc_end: null,
+  docentry: null,
+  id_solped: null,
+  item_code: null,
+  categoria_item: null,
+  id_aprobacion: null,
+  numero_oc: null,
+  borrador_oc: null,
+  id_borrador_oc: null,
+  estado: null,
 };
 
 const DataTableMateriales = ({
   data,
   filter,
-  setFilter,
   resetState,
+  columnsFilter,
   user,
   dinamicState,
   setDinamicState,
@@ -59,9 +72,24 @@ const DataTableMateriales = ({
   const [openFilterColumns, setOpenFilterColumns] = useState(false);
   const [filterData, setFilterData] = useState(filterState);
 
-  const [visibleColumns, setVisibleColumns] = useState(INITIAL_VISIBLE_COLUMNS);
+  const [visibleColumns, setVisibleColumns] = useState(columnsFilter);
+  const [columnsUpdate, setColumnsUpdate] = useState(columnsFilter);
 
-  const columns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
+  const columns = useMemo(() => {
+    if (data && data.data && data.data.length > 0) {
+      return getColumns(data.data[0]);
+    }
+
+    return [
+      { name: "ID SOLPED", uid: "id_solped" },
+      { name: "Fecha Creación Solped", uid: "fecha_creacion_solped" },
+      { name: "Solicitante", uid: "solicitante" },
+      { name: "Item", uid: "item" },
+      { name: "Detalle", uid: "detalle" },
+      { name: "Stock", uid: "stock" },
+      { name: "Estado Pedido", uid: "estado_pedido" },
+    ];
+  }, [data]);
 
   const headerColumns = useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -217,19 +245,74 @@ const DataTableMateriales = ({
     resetState();
   };
 
+  const handleFilterColumnSubmit = () => {
+    dispatch({
+      type: "FILTER_COLUMN",
+      payload: columnsUpdate,
+    });
+
+    resetState();
+  };
+
+  // if (data.data.length === 0)
+  //   return (
+  //     <Table
+  //       topContent={topContent}
+  //       bottomContent={bottomContent}
+  //       aria-label="Example static collection table"
+  //     >
+  //       <TableHeader columns={headerColumns}>
+  //         {(column) => (
+  //           <TableColumn
+  //             className="bg-emerald-700 text-white text-xs"
+  //             key={column.uid}
+  //             align={column.uid === "actions" ? "center" : "start"}
+  //           >
+  //             {column.name}
+  //           </TableColumn>
+  //         )}
+  //       </TableHeader>
+  //       <TableBody>
+  //         <TableRow key="1">
+  //           <TableCell>Tony Reichert</TableCell>
+  //           <TableCell>CEO</TableCell>
+  //           <TableCell>Active</TableCell>
+  //         </TableRow>
+  //         <TableRow key="2">
+  //           <TableCell>Zoey Lang</TableCell>
+  //           <TableCell>Technical Lead</TableCell>
+  //           <TableCell>Paused</TableCell>
+  //         </TableRow>
+  //         <TableRow key="3">
+  //           <TableCell>Jane Fisher</TableCell>
+  //           <TableCell>Senior Developer</TableCell>
+  //           <TableCell>Active</TableCell>
+  //         </TableRow>
+  //         <TableRow key="4">
+  //           <TableCell>William Howard</TableCell>
+  //           <TableCell>Community Manager</TableCell>
+  //           <TableCell>Vacation</TableCell>
+  //         </TableRow>
+  //       </TableBody>
+  //     </Table>
+  //   );
+
   return (
     <>
-      <ModalComponent
-        open={open}
-        handleModal={handleModal}
-        data={solpedData.current}
-        resetState={resetState}
-      />
+      {data.data && data.data.length !== 0 && (
+        <ModalComponent
+          open={open}
+          handleModal={handleModal}
+          data={solpedData.current}
+          resetState={resetState}
+        />
+      )}
       <ModalFilterColumns
-        visibleColumns={visibleColumns}
+        visibleColumns={columnsUpdate}
         columns={columns}
-        setVisibleColumns={setVisibleColumns}
+        setVisibleColumns={setColumnsUpdate}
         open={openFilterColumns}
+        handleFilterColumnSubmit={handleFilterColumnSubmit}
         handleModal={handleModalFilterColumns}
       />
       <ModalFilters
@@ -257,7 +340,11 @@ const DataTableMateriales = ({
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody loadingContent={<Spinner />} items={data.data}>
+        <TableBody
+          emptyContent={"No hay datos."}
+          loadingContent={<Spinner />}
+          items={data.data}
+        >
           {(item) => (
             <TableRow key={item.pkey}>
               {(columnKey) => (

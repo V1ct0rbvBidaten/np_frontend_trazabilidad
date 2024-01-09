@@ -7,13 +7,12 @@ import {
   Button,
   Input,
   Select,
-  SelectSection,
   SelectItem,
   Autocomplete,
   AutocompleteItem,
 } from "@nextui-org/react";
-import { useState } from "react";
-import { createUser } from "../../../api/auth";
+import { useState, useEffect } from "react";
+import { updateUser } from "../../../api/auth";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
@@ -48,39 +47,74 @@ const queryState = {
   proveedor: null,
 };
 
-const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
-  const [queryData, setQueryData] = useState(queryState);
-  const [body, setBody] = useState(pageState);
-  const [reload, setReload] = useState(false);
+const EditUsuarioModal = ({ isOpen, onOpenChange, data, resetState }) => {
   const user = useSelector((state) => state.user);
   const [values, setValues] = useState(initialState);
+  const [body, setBody] = useState(pageState);
+  const [reload, setReload] = useState(false);
+  const [queryData, setQueryData] = useState(queryState);
 
-  const { data: ceco, loading } = useCeco(user.token, body, reload);
-  const { data: proveedor } = useProveedor(user.token, body, reload);
-  const { data: solicitante } = useSolicitante(user.token, body, reload);
-  const { data: grupoArticulo } = useGrupoArticulos(user.token, body, reload);
-  const { data: grupoCompra } = useGrupoCompra(user.token, body, reload);
+  const { data: ceco, loading: loading1 } = useCeco(user.token, body, reload);
 
-  const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
+  const { data: proveedor, loading: loading2 } = useProveedor(
+    user.token,
+    body,
+    reload
+  );
+  const { data: solicitante, loading: loading3 } = useSolicitante(
+    user.token,
+    body,
+    reload
+  );
+
+  const { data: grupoArticulo, loading: loading4 } = useGrupoArticulos(
+    user.token,
+    body,
+    reload
+  );
+
+  const { data: grupoCompra, loading: loading5 } = useGrupoCompra(
+    user.token,
+    body,
+    reload
+  );
+
+  useEffect(() => {
+    if (data) {
+      setValues({
+        // id: data.id,
+        nombre_completo: data.nombre_completo,
+        email: data.email,
+        role: data.role,
+        contrasena: data.contrasena,
+        activo: data.activo,
+        query: data.query,
+        // fecha: data.fecha,
+        // hora: data.hora
+      });
+    }
+  }, [data]);
+
+  const { nombre_completo, email, contrasena, role, query } = values;
 
   const handleFilterChange = (e) => {
     setQueryData({ ...queryData, [e.target.name]: e.target.value });
   };
 
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = (e) => {
     values.query = JSON.stringify(queryData);
-    createUser(user.token, values)
+    updateUser(user.token, Number(data.id), values)
       .then((res) => toast.success("Usuario creado exitosamente"))
       .catch((err) => toast.error(err))
       .finally(() => {
-        onOpenChange();
         resetState();
+        onOpenChange();
       });
   };
-
-  const { nombre_completo, email, contrasena, role, query } = values;
 
   return (
     <Modal size="5xl" isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -198,15 +232,14 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
                       className="max-w-xs"
                       size="sm"
                     >
-                      {solicitante &&
-                        solicitante.data.map((item) => (
-                          <SelectItem
-                            key={item.solicitante}
-                            value={item.solicitante}
-                          >
-                            {item.solicitante}
-                          </SelectItem>
-                        ))}
+                      {solicitante.data.map((item) => (
+                        <SelectItem
+                          key={item.solicitante}
+                          value={item.solicitante}
+                        >
+                          {item.solicitante}
+                        </SelectItem>
+                      ))}
                     </Select>
                     <Select
                       label="Seleccionar grupo artículos"
@@ -218,15 +251,14 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
                       className="max-w-xs"
                       size="sm"
                     >
-                      {grupoArticulo &&
-                        grupoArticulo.data.map((item) => (
-                          <SelectItem
-                            key={item.grupo_articulos}
-                            value={item.grupo_articulos}
-                          >
-                            {item.grupo_articulos}
-                          </SelectItem>
-                        ))}
+                      {grupoArticulo.data.map((item) => (
+                        <SelectItem
+                          key={item.grupo_articulos}
+                          value={item.grupo_articulos}
+                        >
+                          {item.grupo_articulos}
+                        </SelectItem>
+                      ))}
                     </Select>
                     <Select
                       label="Seleccionar grupo compra"
@@ -238,15 +270,14 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
                       className="max-w-xs"
                       size="sm"
                     >
-                      {grupoCompra &&
-                        grupoCompra.data.map((item) => (
-                          <SelectItem
-                            key={item.grupo_compra}
-                            value={item.grupo_compra}
-                          >
-                            {item.grupo_compra}
-                          </SelectItem>
-                        ))}
+                      {grupoCompra.data.map((item) => (
+                        <SelectItem
+                          key={item.grupo_compra}
+                          value={item.grupo_compra}
+                        >
+                          {item.grupo_compra}
+                        </SelectItem>
+                      ))}
                     </Select>
 
                     <Autocomplete
@@ -259,15 +290,14 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
                       className="max-w-xs"
                       size="sm"
                     >
-                      {proveedor &&
-                        proveedor.data.map((item) => (
-                          <AutocompleteItem
-                            key={item.proveedor}
-                            value={item.proveedor}
-                          >
-                            {item.proveedor}
-                          </AutocompleteItem>
-                        ))}
+                      {proveedor.data.map((item) => (
+                        <AutocompleteItem
+                          key={item.proveedor}
+                          value={item.proveedor}
+                        >
+                          {item.proveedor}
+                        </AutocompleteItem>
+                      ))}
                     </Autocomplete>
                   </>
                 )}
@@ -277,8 +307,8 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
               <Button color="danger" variant="light" onPress={onClose}>
                 Close
               </Button>
-              <Button color="primary" onClick={handleSubmit}>
-                Guardar
+              <Button color="primary" onPress={handleSubmit}>
+                Editar
               </Button>
             </ModalFooter>
           </>
@@ -288,4 +318,4 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
   );
 };
 
-export default CreateNuevoUsuarioModal;
+export default EditUsuarioModal;

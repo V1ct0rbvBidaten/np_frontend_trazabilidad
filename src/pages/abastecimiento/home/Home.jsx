@@ -1,12 +1,5 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Divider,
-  Tab,
-  Tabs,
-} from "@nextui-org/react";
-import { useSelector, useDispatch } from "react-redux";
+import { Card, CardHeader, CardBody, Divider } from "@nextui-org/react";
+import { useSelector } from "react-redux";
 
 import { useState } from "react";
 import useR2Trazabilidad from "../../../hooks/useR2andTrazabilidadData";
@@ -29,6 +22,7 @@ const initialDinamicState = {
 
 const Home = ({ user }) => {
   const filter = useSelector((state) => state.filter);
+  const columnsFilter = useSelector((state) => state.columns);
 
   const [body, setBody] = useState(initialState);
   const [dinamicState, setDinamicState] = useState(initialDinamicState);
@@ -84,6 +78,7 @@ const Home = ({ user }) => {
         <DataTableMateriales
           data={registros}
           user={user}
+          columnsFilter={columnsFilter}
           dinamicState={dinamicState}
           setDinamicState={setDinamicState}
           resetState={resetState}

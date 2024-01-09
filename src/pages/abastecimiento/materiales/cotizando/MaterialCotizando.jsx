@@ -24,6 +24,7 @@ const initialDinamicState = {
 
 const MaterialCotizando = ({ user }) => {
   const filter = useSelector((state) => state.filter);
+  const columnsFilter = useSelector((state) => state.columns);
 
   const [body, setBody] = useState(initialState);
   const [dinamicState, setDinamicState] = useState(initialDinamicState);
@@ -56,6 +57,7 @@ const MaterialCotizando = ({ user }) => {
       <div className="flex mt-2 w-full flex-col">
         <DataTableMateriales
           data={registros}
+          columnsFilter={columnsFilter}
           filter={body}
           dinamicState={dinamicState}
           setDinamicState={setDinamicState}

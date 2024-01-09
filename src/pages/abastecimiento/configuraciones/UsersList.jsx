@@ -10,11 +10,17 @@ const initialState = {
 
 const UsersList = ({ user }) => {
   const [body, setBody] = useState(initialState);
+  const [reload, setReload] = useState(false);
+
+  const resetState = () => {
+    setReload(!reload);
+  };
 
   const { data: registros, loading } = useUsers(
     user.token,
     Number(body.page),
-    body.per_page
+    body.per_page,
+    reload
   );
 
   if (loading)
@@ -31,7 +37,12 @@ const UsersList = ({ user }) => {
     <div>
       <UserTitle />
       <div className="flex mt-2 w-full flex-col">
-        <UsersTable data={registros} filter={body} setFilter={setBody} />
+        <UsersTable
+          data={registros}
+          resetState={resetState}
+          filter={body}
+          setFilter={setBody}
+        />
       </div>
     </div>
   );

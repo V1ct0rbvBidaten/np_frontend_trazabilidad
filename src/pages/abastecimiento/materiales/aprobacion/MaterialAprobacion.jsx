@@ -24,6 +24,7 @@ const initialDinamicState = {
 
 const MaterialAprobacion = ({ user }) => {
   const filter = useSelector((state) => state.filter);
+  const columnsFilter = useSelector((state) => state.columns);
 
   const [body, setBody] = useState(initialState);
   const [dinamicState, setDinamicState] = useState(initialDinamicState);
@@ -58,6 +59,7 @@ const MaterialAprobacion = ({ user }) => {
         <DataTableMateriales
           data={registros}
           filter={body}
+          columnsFilter={columnsFilter}
           dinamicState={dinamicState}
           setDinamicState={setDinamicState}
           user={user}

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState, useRef } from "react";
 import {
   Table,
   TableHeader,
@@ -15,9 +15,11 @@ import {
 import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { getColumns } from "../../../functions/tableUtilities";
 import CreateNuevoUsuarioModal from "./CreateNuevoUsuarioModal";
+import EditUsuarioModal from "./EditUsuarioModal";
 
-const UsersTable = ({ data, filter, setFilter }) => {
+const UsersTable = ({ data, filter, setFilter, resetState }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [openEdit, setOpenEdit] = useState(false);
 
   const allColumns = useMemo(() => getColumns(data.data[0]), [data.data[0]]);
 
@@ -37,6 +39,18 @@ const UsersTable = ({ data, filter, setFilter }) => {
     grupo_articulo,
   } = filter;
 
+  const userData = useRef([]);
+
+  const handleModal = (value) => {
+    console.log(value);
+    if (open === true) {
+      setOpenEdit(!openEdit);
+    } else {
+      setOpenEdit(!openEdit);
+      userData.current = value;
+    }
+  };
+
   const renderCell = useCallback((value, columnKey) => {
     const cellValue = value[columnKey];
 
@@ -47,6 +61,7 @@ const UsersTable = ({ data, filter, setFilter }) => {
             className="bg-emerald-500 text-white"
             size="sm"
             startContent={<MagnifyingGlassIcon className="h-6" />}
+            onClick={() => handleModal(value)}
           >
             Detalle
           </Button>
@@ -107,7 +122,17 @@ const UsersTable = ({ data, filter, setFilter }) => {
 
   return (
     <>
-      <CreateNuevoUsuarioModal isOpen={isOpen} onOpenChange={onOpenChange} />
+      <EditUsuarioModal
+        isOpen={openEdit}
+        onOpenChange={handleModal}
+        data={userData.current}
+        resetState={resetState}
+      />
+      <CreateNuevoUsuarioModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        resetState={resetState}
+      />
       <Table
         isCompact
         aria-label="Example table with custom cells"

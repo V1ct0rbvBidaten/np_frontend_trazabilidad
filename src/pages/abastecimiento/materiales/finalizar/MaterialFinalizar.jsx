@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import MaterialesTitle from "../MaterialesTitle";
 import useR2Trazabilidad from "../../../../hooks/useR2andTrazabilidadData";
 import DataTableMateriales from "../../../../components/DataTableMateriales";
@@ -24,6 +24,7 @@ const initialDinamicState = {
 
 const MaterialFinalizar = ({ user }) => {
   const filter = useSelector((state) => state.filter);
+  const columnsFilter = useSelector((state) => state.columns);
 
   const [body, setBody] = useState(initialState);
   const [dinamicState, setDinamicState] = useState(initialDinamicState);
@@ -58,6 +59,7 @@ const MaterialFinalizar = ({ user }) => {
           data={registros}
           user={user}
           filter={body}
+          columnsFilter={columnsFilter}
           dinamicState={dinamicState}
           setDinamicState={setDinamicState}
           resetState={resetState}
