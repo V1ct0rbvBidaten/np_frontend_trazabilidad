@@ -43,6 +43,7 @@ const ModalHome = ({ data, open, handleModal }) => {
     id_borrador_oc,
     proveedor,
     estado,
+    comentario_despacho,
     id,
     estado_pedido,
     bodega,
@@ -58,6 +59,7 @@ const ModalHome = ({ data, open, handleModal }) => {
     fecha_cotizando,
     fecha_flujo,
     fecha_despacho,
+    responsable_despacho,
     fecha_entrega,
   } = data;
 
@@ -290,71 +292,30 @@ const ModalHome = ({ data, open, handleModal }) => {
                         </CardBody>
                       </Card>
                     </Tab>
-                    <Tab key="proveedores" title="Proveedores">
-                      <Card>
-                        <CardBody>
-                          <div className="grid grid-cols-2 gap-2">
-                            <Input
-                              label="Rut"
-                              labelPlacement="outside"
-                              placeholder=" "
-                              size="sm"
-                              isReadOnly
-                              className="w-full"
-                              value={rut}
-                              variant="bordered"
-                            />
-                            <Input
-                              label="Proveedor"
-                              labelPlacement="outside"
-                              placeholder=" "
-                              size="sm"
-                              isReadOnly
-                              className="w-full"
-                              value={proveedor}
-                              variant="bordered"
-                            />
-                            <Input
-                              label="Rut"
-                              labelPlacement="outside"
-                              placeholder=" "
-                              size="sm"
-                              isReadOnly
-                              className="w-full"
-                              value={rut_2}
-                              variant="bordered"
-                            />
-                            <Input
-                              label="Proveedor"
-                              labelPlacement="outside"
-                              placeholder=" "
-                              size="sm"
-                              isReadOnly
-                              className="w-full"
-                              value={proveedor_2}
-                              variant="bordered"
-                            />
-                            <Input
-                              label="Rut"
-                              labelPlacement="outside"
-                              placeholder=" "
-                              size="sm"
-                              isReadOnly
-                              className="w-full"
-                              value={rut_3}
-                              variant="bordered"
-                            />
-                            <Input
-                              label="Proveedor"
-                              labelPlacement="outside"
-                              placeholder=" "
-                              size="sm"
-                              isReadOnly
-                              className="w-full"
-                              value={proveedor_3}
-                              variant="bordered"
-                            />
-                          </div>
+                    <Tab key="despacho" title="Despacho">
+                      <Card className="w-full">
+                        <CardBody className="grid  gap-2">
+                          <Input
+                            label="Responsable despacho"
+                            labelPlacement="outside"
+                            placeholder=" "
+                            size="sm"
+                            isReadOnly
+                            className="w-full"
+                            value={responsable_despacho}
+                            variant="bordered"
+                          />
+
+                          <Textarea
+                            label="Fecha Solicitud"
+                            labelPlacement="outside"
+                            placeholder=" "
+                            size="sm"
+                            isReadOnly
+                            className="w-full"
+                            value={comentario_despacho}
+                            variant="bordered"
+                          />
                         </CardBody>
                       </Card>
                     </Tab>

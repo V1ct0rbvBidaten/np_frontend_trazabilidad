@@ -22,6 +22,7 @@ import { getColumns } from "../functions/tableUtilities";
 import ModalComponent from "./Modal";
 import ModalFilterColumns from "./ModalFilterColumns";
 import ModalFilters from "./ModalFilters";
+import ModalHome from "../pages/abastecimiento/home/ModalHome";
 
 const INITIAL_VISIBLE_COLUMNS = [
   "id_solped",

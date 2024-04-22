@@ -55,11 +55,27 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
   const user = useSelector((state) => state.user);
   const [values, setValues] = useState(initialState);
 
-  const { data: ceco, loading } = useCeco(user.token, body, reload);
-  const { data: proveedor } = useProveedor(user.token, body, reload);
-  const { data: solicitante } = useSolicitante(user.token, body, reload);
-  const { data: grupoArticulo } = useGrupoArticulos(user.token, body, reload);
-  const { data: grupoCompra } = useGrupoCompra(user.token, body, reload);
+  const { data: ceco, loading: loading } = useCeco(user.token, body, reload);
+  const { data: proveedor, loading: loading1 } = useProveedor(
+    user.token,
+    body,
+    reload
+  );
+  const { data: solicitante, loading: loading2 } = useSolicitante(
+    user.token,
+    body,
+    reload
+  );
+  const { data: grupoArticulo, loading: loading3 } = useGrupoArticulos(
+    user.token,
+    body,
+    reload
+  );
+  const { data: grupoCompra, loading: loading4 } = useGrupoCompra(
+    user.token,
+    body,
+    reload
+  );
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -81,6 +97,23 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
   };
 
   const { nombre_completo, email, contrasena, role, query } = values;
+
+  if (loading || loading1 || loading2 || loading3 || loading4) {
+    return (
+      <Modal size="5xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Crear Usuario
+              </ModalHeader>
+              <ModalBody>Cargando....</ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    );
+  }
 
   return (
     <Modal size="5xl" isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -144,7 +177,7 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
                   </SelectItem>
                 </Select>
               </div>
-              <div className="grid grid-cols-5 gap-4 mt-3">
+              <div className="grid grid-cols-4 gap-4 mt-3">
                 {role === "user" && (
                   <>
                     <div className="col-span-4">
@@ -157,10 +190,8 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
                       name="fecha_creacion_solped_start"
                       value={queryData.fecha_creacion_solped_start}
                       onChange={handleFilterChange}
-                      className=" col-span-2"
                       size="sm"
                     />
-                    <div className=""></div>
                     <Input
                       type="date"
                       label="Seleccionar fecha hasta"
@@ -168,7 +199,6 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
                       name="fecha_creacion_solped_end"
                       value={queryData.fecha_creacion_solped_end}
                       onChange={handleFilterChange}
-                      className=" col-span-2"
                       size="sm"
                     />
                     <Select
@@ -198,15 +228,11 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
                       className="max-w-xs"
                       size="sm"
                     >
-                      {solicitante &&
-                        solicitante.data.map((item) => (
-                          <SelectItem
-                            key={item.solicitante}
-                            value={item.solicitante}
-                          >
-                            {item.solicitante}
-                          </SelectItem>
-                        ))}
+                      {solicitante?.data?.map(({ solicitante }) => (
+                        <SelectItem key={solicitante} value={solicitante}>
+                          {solicitante}
+                        </SelectItem>
+                      ))}
                     </Select>
                     <Select
                       label="Seleccionar grupo artículos"
@@ -215,7 +241,7 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
                       selectionMode="multiple"
                       value={queryData.grupo_articulo}
                       onChange={handleFilterChange}
-                      className="max-w-xs"
+                      className=" col-span-2"
                       size="sm"
                     >
                       {grupoArticulo &&
@@ -235,7 +261,7 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
                       selectionMode="multiple"
                       value={queryData.grupo_compra}
                       onChange={handleFilterChange}
-                      className="max-w-xs"
+                      className="col-span-2"
                       size="sm"
                     >
                       {grupoCompra &&
@@ -248,7 +274,7 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
                           </SelectItem>
                         ))}
                     </Select>
-
+                    {/* 
                     <Autocomplete
                       label="Seleccionar proveedor"
                       placeholder="Proveedor"
@@ -268,7 +294,7 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
                             {item.proveedor}
                           </AutocompleteItem>
                         ))}
-                    </Autocomplete>
+                    </Autocomplete> */}
                   </>
                 )}
               </div>
