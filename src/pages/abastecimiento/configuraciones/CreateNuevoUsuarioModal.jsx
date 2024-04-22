@@ -107,7 +107,7 @@ const CreateNuevoUsuarioModal = ({ isOpen, onOpenChange, resetState }) => {
               <ModalHeader className="flex flex-col gap-1">
                 Crear Usuario
               </ModalHeader>
-              <ModalBody>Cargando....</ModalBody>
+              <ModalBody>Cargando...</ModalBody>
             </>
           )}
         </ModalContent>
